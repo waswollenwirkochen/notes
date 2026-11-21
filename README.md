@@ -3,8 +3,11 @@
 Persönliches Notizbuch für Laptop und Smartphone – als GitHub Page.
 
 - **To-dos**: „Heute“ und „Langfristig“. Erledigtes aus „Heute“ verschwindet über Nacht.
-- **Notizen**: freie Notizblöcke mit Suche, Anpinnen, Farben, Link-Chips, Kopieren/Teilen – plus **Spielstand**-Zähler (z. B. für die Bar).
+  **Wiederkehrende Aufgaben** (↻): täglich, werktags, an bestimmten Wochentagen, alle 2 Wochen oder monatlich – sie tauchen am Stichtag unter „Heute“ auf.
+- **Notizen**: freie Notizblöcke mit Suche, Anpinnen, Farben, Link-Chips, Kopieren/Teilen, **Checklisten** (auch direkt auf der Karte abhakbar) – plus **Spielstand**-Zähler.
 - **Frachtraum**: Bilder, Videos und Dateien zwischen Geräten hin- und herschieben (Upload, Drag & Drop, Strg+V), ansehen, teilen/sichern, löschen.
+  **Auto-Löschen** nach 1 Tag, 3 Tagen, 1 Woche, 1 Monat oder 3 Monaten; einzelne Dateien lassen sich mit „Behalten“ ausnehmen.
+- **Schnellnotiz**: runder Knopf unten rechts oder Taste **N** – als Notiz oder direkt als To-do (jede Zeile eine Aufgabe). Auf Android auch per langem Druck aufs App-Icon.
 
 ## So funktioniert der Zugriffsschutz
 

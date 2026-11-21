@@ -1,7 +1,7 @@
 /* Kosmos · Service Worker
    - hält die App offline verfügbar
    - nimmt geteilte Dateien/Texte an (Android: „Teilen mit … Kosmos“) */
-const CACHE = 'kosmos-v1';
+const CACHE = 'kosmos-v2';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {

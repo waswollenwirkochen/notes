@@ -251,7 +251,7 @@ main{max-width:1120px;margin:0 auto;padding:8px 20px 60px}
 .kv span:first-child{color:var(--muted)}
 .sheet .close{position:absolute;top:12px;right:12px}
 
-#toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + 20px + var(--safe-b));transform:translateX(-50%) translateY(20px);z-index:60;display:flex;align-items:center;gap:14px;padding:11px 12px 11px 18px;border-radius:999px;background:#1d1f45;border:1px solid var(--line2);box-shadow:0 14px 40px rgba(0,0,0,.5);font-size:14px;opacity:0;pointer-events:none;transition:all .25s;max-width:calc(100vw - 32px)}
+#toast{position:fixed;left:50%;width:max-content;bottom:calc(var(--nav-h) + 20px + var(--safe-b));transform:translateX(-50%) translateY(20px);z-index:60;display:flex;align-items:center;gap:14px;padding:11px 12px 11px 18px;border-radius:999px;background:#1d1f45;border:1px solid var(--line2);box-shadow:0 14px 40px rgba(0,0,0,.5);font-size:14px;opacity:0;pointer-events:none;transition:all .25s;max-width:calc(100vw - 32px)}
 #toast.on{opacity:1;transform:translateX(-50%);pointer-events:auto}
 #toast button{color:var(--star);font-weight:700;padding:4px 8px}
 
@@ -265,6 +265,8 @@ main{max-width:1120px;margin:0 auto;padding:8px 20px 60px}
   .tab .badge{position:absolute;top:4px;left:calc(50% + 6px)}
   main{padding:4px 14px calc(var(--nav-h) + 40px + var(--safe-b))}
   .todo-grid{grid-template-columns:1fr}
+  .panel-h{flex-wrap:wrap;row-gap:2px}
+  .panel-h .hint{flex-basis:100%;margin-left:0}
   .todo .acts{opacity:1}
   .notes-grid{columns:2 150px;column-gap:10px}
   .note{margin-bottom:10px;padding:14px 13px 10px}
@@ -278,6 +280,59 @@ main{max-width:1120px;margin:0 auto;padding:8px 20px 60px}
   .v-nav{display:none}
   .toolbar .btn{padding:10px 14px}
   .selbar{top:64px}
+}
+
+/* Wiederholen / Chips */
+.todo-col{display:flex;flex-direction:column;gap:18px}
+.todo .age.rep{color:var(--teal);opacity:.85}
+.todo .age b{color:var(--star);font-weight:600}
+.upcoming .txt{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.chip{padding:8px 14px;border-radius:999px;border:1px solid var(--line2);color:var(--muted);font-weight:600;font-size:14px;transition:all .15s}
+.chip:hover{color:var(--text)}
+.chip.on{background:linear-gradient(135deg,#b3a6ff,#79e9de);color:#0a0b1c;border-color:transparent}
+.chip.round{width:44px;height:44px;padding:0;display:grid;place-items:center}
+.mday{display:flex;align-items:center;gap:8px;color:var(--muted);margin-bottom:14px}
+.mday .inp{width:84px;text-align:center}
+.repnext{color:var(--star);font-size:14px;margin:2px 0 16px}
+/* Checklisten */
+.cl{padding:2px 20px 0}
+.cli{display:flex;align-items:center;gap:10px}
+.cli .cl-txt{flex:1;min-width:0;background:none;border:0;outline:0;padding:8px 2px;font-size:16px}
+.cli.is-done .cl-txt{color:var(--dim);text-decoration:line-through}
+.cli .rm{color:var(--dim);font-size:18px;padding:6px 8px;opacity:.55}
+.cli .rm:hover{color:var(--danger);opacity:1}
+.cl-acts{display:flex;align-items:center;gap:14px;padding:4px 0 6px;font-size:13px}
+.cl-add{display:inline-flex;align-items:center;gap:6px;color:var(--violet);font-weight:600;font-size:14px;padding:6px 0}
+.cl-add svg{width:16px;height:16px}
+.editor.has-cl .ed-body{min-height:16vh}
+.cl-prev{display:flex;flex-direction:column;gap:1px;margin:2px 0 6px}
+.clp{display:flex;align-items:flex-start;gap:9px;text-align:left;font-size:14px;color:#c9c8e6;padding:3px 0;overflow-wrap:anywhere}
+.clp .check{width:17px;height:17px;border-width:1.5px;margin-top:2px}
+.clp .check::after{inset:2.5px}
+.clp.is-done span:last-child{color:var(--dim);text-decoration:line-through}
+/* Auto-Löschen */
+.ttl{display:inline-flex;align-items:center;gap:6px;padding:0 4px 0 12px;border-radius:999px;border:1px solid var(--line2);color:var(--muted)}
+.ttl svg{width:18px;height:18px}
+.ttl select{background:none;border:0;color:var(--text);font:600 14px var(--body);padding:10px 8px 10px 0;outline:0;cursor:pointer;max-width:220px}
+.ttl select option{background:#14152f}
+.tile .tb{position:absolute;left:6px;top:6px;padding:1px 7px;border-radius:8px;background:rgba(0,0,0,.6);font-size:11px;color:#e5e4ff}
+.tile .tb.soon{color:var(--star)}
+.tile .tb svg{width:11px;height:11px;fill:var(--star);color:var(--star);vertical-align:-1px}
+.btn.on{color:var(--star);border-color:rgba(255,213,126,.45)}
+.btn.on svg{fill:var(--star)}
+/* Schnellnotiz */
+.fab{position:fixed;right:28px;bottom:28px;z-index:25;width:58px;height:58px;border-radius:20px;display:grid;place-items:center;color:#1a1206;background:linear-gradient(135deg,#ffe7ad,#ffb86b);box-shadow:0 10px 30px rgba(255,184,107,.35),0 0 0 6px rgba(255,213,126,.07);transition:transform .15s}
+.fab:hover{transform:translateY(-2px) rotate(-5deg)}
+.fab:active{transform:scale(.94)}
+.fab svg{width:25px;height:25px}
+.qtxt{resize:vertical;min-height:130px;line-height:1.55}
+.qhint{color:var(--dim);font-size:13px;min-height:1.2em;margin:-4px 0 12px}
+.kbd{font-size:11px;opacity:.6;font-weight:700;margin-left:6px}
+@media (hover:none){.kbd{display:none}}
+@media (max-width:760px){
+  .fab{right:16px;bottom:calc(var(--nav-h) + 22px + var(--safe-b));width:54px;height:54px;border-radius:18px}
+  .ttl select{max-width:170px}
 }
 @media (max-width:380px){.notes-grid{columns:1}}
 </style>
@@ -298,6 +353,7 @@ main{max-width:1120px;margin:0 auto;padding:8px 20px 60px}
     </div>
   </header>
   <main id="main"></main>
+  <button class="fab" id="fab" title="Schnellnotiz (Taste N)" aria-label="Schnellnotiz"></button>
 </div>
 
 <div id="overlay"></div>
@@ -339,6 +395,10 @@ const I = {
   search: sv('<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>'),
   play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z" fill="currentColor"/></svg>',
   select: sv('<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/>'),
+  repeat: sv('<path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/>'),
+  clock: sv('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),
+  pen: sv('<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/>'),
+  list: sv('<path d="M10 6h10M10 12h10M10 18h10"/><path d="M4 6l1.2 1.2L7.5 5M4 12l1.2 1.2L7.5 11M4 18l1.2 1.2L7.5 17"/>'),
   dice: sv('<rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="9" cy="9" r="1" fill="currentColor"/><circle cx="15" cy="15" r="1" fill="currentColor"/><circle cx="15" cy="9" r="1" fill="currentColor"/><circle cx="9" cy="15" r="1" fill="currentColor"/>'),
 };
 let _lg = 0;
@@ -368,6 +428,14 @@ function dayLabel(t) {
   if (t >= d0) return 'Heute';
   if (t >= d0 - DAY) return 'Gestern';
   return new Date(t).toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long', year: new Date(t).getFullYear() === new Date().getFullYear() ? undefined : 'numeric' });
+}
+const addDays = (t, n) => { const d = new Date(t); d.setDate(d.getDate() + n); return d.getTime(); };
+const WD = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+function fmtDay(t) {
+  const d0 = startOfDay();
+  if (t === d0) return 'heute';
+  if (t === addDays(d0, 1)) return 'morgen';
+  return WD[new Date(t).getDay()] + ', ' + new Date(t).toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric' });
 }
 const fmtDur = s => { s = Math.round(s || 0); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
 function b64(buf) { const b = buf instanceof Uint8Array ? buf : new Uint8Array(buf); let s = ''; for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode.apply(null, b.subarray(i, i + 0x8000)); return btoa(s); }
@@ -416,7 +484,7 @@ const S = {
   rev: 0, sync: 'idle', lastSync: 0, search: '', selecting: false, picked: new Set(),
   modal: null, noteId: null, viewId: null, uploads: [], doneOpen: {}, pendingRender: false,
 };
-function emptyData() { return { v: 1, todos: [], notes: [], media: [] }; }
+function emptyData() { return { v: 1, todos: [], notes: [], media: [], settings: { mediaTTL: 0, updatedAt: 0 } }; }
 
 /* ---------- GitHub ---------- */
 async function gh(path, opts = {}) {
@@ -472,8 +540,10 @@ function mergeList(a = [], b = []) {
   for (const y of b) { const x = m.get(y.id); if (!x || (y.updatedAt || 0) > (x.updatedAt || 0)) m.set(y.id, y); }
   return [...m.values()];
 }
-const merge = (a, b) => ({ v: 1, todos: mergeList(a.todos, b.todos), notes: mergeList(a.notes, b.notes), media: mergeList(a.media, b.media) });
+const mergeSet = (a = {}, b = {}) => ((b.updatedAt || 0) > (a.updatedAt || 0) ? b : a);
+const merge = (a, b) => ({ v: 1, todos: mergeList(a.todos, b.todos), notes: mergeList(a.notes, b.notes), media: mergeList(a.media, b.media), settings: { mediaTTL: 0, updatedAt: 0, ...mergeSet(a.settings, b.settings) } });
 function sameAs(a, b) {
+  if (((a.settings || {}).updatedAt || 0) !== ((b.settings || {}).updatedAt || 0)) return false;
   for (const k of ['todos', 'notes', 'media']) {
     const A = a[k] || [], B = new Map((b[k] || []).map(x => [x.id, x.updatedAt]));
     if (A.length !== B.size) return false;
@@ -513,7 +583,7 @@ async function sync() {
       if (S.data.todos.length || S.data.notes.length || S.data.media.length) schedulePush(200); else setSync('ok');
     }
     S.lastSync = Date.now();
-    dailyCleanup(); saveCache(); safeRender();
+    dailyCleanup(); runAutoDelete(); saveCache(); safeRender();
   } catch (e) { syncError(e); }
 }
 let _pushT;
@@ -644,9 +714,10 @@ async function doUnlock(f) {
 async function enterApp() {
   $('#gate').hidden = true; $('#app').hidden = false;
   $('#brand').innerHTML = logo() + '<span>Kosmos</span>';
-  $('#setBtn').innerHTML = I.gear;
+  $('#setBtn').innerHTML = I.gear; $('#fab').innerHTML = I.pen;
   await loadCache();
   render(); sync().then(processShared);
+  if (/[?&]quick/.test(location.search)) { history.replaceState(null, '', location.pathname); openQuick(); }
 }
 function switchTab(t) {
   if (S.tab === t) return;
@@ -654,7 +725,7 @@ function switchTab(t) {
   render(); window.scrollTo({ top: 0 });
 }
 function renderTabs() {
-  const openToday = alive(S.data.todos).filter(x => x.list === 'today' && !x.done).length;
+  const d0 = startOfDay(), openToday = alive(S.data.todos).filter(x => x.repeat ? x.due <= d0 : (x.list === 'today' && !x.done)).length;
   $('#tabs').innerHTML = TABS.map(([k, l, ic]) => `<button class="tab ${S.tab === k ? 'on' : ''}" data-tab="${k}">${ic}<span>${l}</span>${k === 'todos' && openToday ? `<span class="badge">${openToday}</span>` : ''}</button>`).join('');
 }
 function render() {
@@ -676,31 +747,94 @@ function upd(coll, id, patch) {
 }
 
 /* ---------- To-dos ---------- */
+function repLabel(r) {
+  if (!r) return '';
+  if (r.type === 'daily') return 'täglich';
+  if (r.type === 'weekdays') return 'werktags';
+  if (r.type === 'weekly') return (r.days || []).length === 7 ? 'täglich' : 'jeden ' + [1, 2, 3, 4, 5, 6, 0].filter(d => (r.days || []).includes(d)).map(d => WD[d]).join(', ');
+  if (r.type === 'biweekly') return 'alle 2 Wochen';
+  if (r.type === 'monthly') return 'monatlich am ' + r.day + '.';
+  return '';
+}
+function monthDay(y, m, day) { const last = new Date(y, m + 1, 0).getDate(); return new Date(y, m, Math.min(day, last)).getTime(); }
+// erster Fälligkeitstag NACH "from" (Tagesbeginn)
+function nextDue(r, from) {
+  if (r.type === 'biweekly') { let t = r.anchor || from; while (t <= from) t = addDays(t, 14); return t; }
+  if (r.type === 'monthly') {
+    const d = new Date(from); let c = monthDay(d.getFullYear(), d.getMonth(), r.day);
+    if (c <= from) c = monthDay(d.getFullYear(), d.getMonth() + 1, r.day);
+    return c;
+  }
+  for (let i = 1; i <= 7; i++) {
+    const t = addDays(from, i), wd = new Date(t).getDay();
+    if (r.type === 'daily' || (r.type === 'weekdays' && wd > 0 && wd < 6) || (r.type === 'weekly' && (r.days || []).includes(wd))) return t;
+  }
+  return addDays(from, 1);
+}
+const firstDue = r => nextDue(r, addDays(startOfDay(), -1));
 function ageTag(x) {
-  if (x.list !== 'today' || x.done) return '';
+  if (x.done) return '';
+  if (x.repeat) {
+    const over = Math.round((startOfDay() - x.due) / DAY);
+    return `<span class="age rep" title="Wiederholt sich ${repLabel(x.repeat)}">↻ ${repLabel(x.repeat).replace('monatlich am', 'mtl.')}${over >= 1 ? ` <b>${over === 1 ? 'seit gestern' : 'seit ' + over + ' T.'}</b>` : ''}</span>`;
+  }
+  if (x.list !== 'today') return '';
   const days = Math.round((startOfDay() - startOfDay(x.createdAt)) / DAY);
   return days >= 1 ? `<span class="age" title="Seit ${days} ${days === 1 ? 'Tag' : 'Tagen'} auf der Liste">${days === 1 ? 'seit gestern' : 'seit ' + days + ' T.'}</span>` : '';
 }
-const todoLi = x => `<li class="todo ${x.done ? 'is-done' : ''}" data-id="${x.id}">
+const todoLi = (x, up) => `<li class="todo ${x.done ? 'is-done' : ''} ${up ? 'upcoming' : ''}" data-id="${x.id}">
   <button class="check" data-act="toggle" aria-label="${x.done ? 'Wieder öffnen' : 'Erledigt'}"></button>
   <span class="txt" contenteditable="true" spellcheck="false" enterkeyhint="done">${esc(x.text)}</span>
-  ${ageTag(x)}
-  <span class="acts">${x.done ? '' : `<button class="mini" data-act="move" title="${x.list === 'today' ? 'Nach „Langfristig“ verschieben' : 'Auf heute holen'}">${x.list === 'today' ? 'später' : '↑ heute'}</button>`}<button class="mini x" data-act="del-todo" title="Löschen" aria-label="Löschen">×</button></span>
+  ${up ? `<span class="age rep">${fmtDay(x.due)} · ${repLabel(x.repeat)}</span>` : ageTag(x)}
+  <span class="acts">${x.done ? '' : `<button class="mini" data-act="repeat" title="Wiederholen …" aria-label="Wiederholen">↻</button>`}${x.done || x.repeat ? '' : `<button class="mini" data-act="move" title="${x.list === 'today' ? 'Nach „Langfristig“ verschieben' : 'Auf heute holen'}">${x.list === 'today' ? 'später' : '↑ heute'}</button>`}<button class="mini x" data-act="del-todo" title="Löschen" aria-label="Löschen">×</button></span>
 </li>`;
+function todoPanel(k, t, ph, em, items) {
+  const open = items.filter(x => !x.done).sort((a, b) => a.order - b.order);
+  const done = items.filter(x => x.done).sort((a, b) => (b.doneAt || 0) - (a.doneAt || 0));
+  return `<section class="panel" data-list="${k}">
+    <header class="panel-h"><h2>${t}</h2><span class="count">${open.length || ''}</span>${k === 'today' ? '<span class="hint">Erledigtes verschwindet über Nacht</span>' : ''}</header>
+    <form class="add-todo" data-list="${k}"><input name="t" placeholder="${ph}" autocomplete="off" enterkeyhint="send"><button aria-label="Hinzufügen">${I.plus}</button></form>
+    <ul class="todos">${open.map(x => todoLi(x)).join('') || `<li class="empty">${em}</li>`}</ul>
+    ${done.length ? `<details class="done-box" data-list="${k}" ${S.doneOpen[k] ? 'open' : ''}><summary>${done.length} erledigt</summary><ul class="todos">${done.map(x => todoLi(x)).join('')}</ul><button class="link" data-act="clear-done" data-list="${k}">Erledigte löschen</button></details>` : ''}
+  </section>`;
+}
 function renderTodos() {
-  const L = [['today', 'Heute', 'Was steht heute an?', 'Klarer Himmel – heute nichts offen.'], ['later', 'Langfristig', 'Irgendwann, aber sicher …', 'Noch nichts für später geplant.']];
-  $('#main').innerHTML = `<div class="todo-grid">${L.map(([k, t, ph, em]) => {
-    const items = alive(S.data.todos).filter(x => x.list === k);
-    const open = items.filter(x => !x.done).sort((a, b) => a.order - b.order);
-    const done = items.filter(x => x.done).sort((a, b) => (b.doneAt || 0) - (a.doneAt || 0));
-    return `<section class="panel" data-list="${k}">
-      <header class="panel-h"><h2>${t}</h2><span class="count">${open.length || ''}</span>${k === 'today' ? '<span class="hint">Erledigtes verschwindet über Nacht</span>' : ''}</header>
-      <form class="add-todo" data-list="${k}"><input name="t" placeholder="${ph}" autocomplete="off" enterkeyhint="send"><button aria-label="Hinzufügen">${I.plus}</button></form>
-      <ul class="todos">${open.map(todoLi).join('') || `<li class="empty">${em}</li>`}</ul>
-      ${done.length ? `<details class="done-box" data-list="${k}" ${S.doneOpen[k] ? 'open' : ''}><summary>${done.length} erledigt</summary><ul class="todos">${done.map(todoLi).join('')}</ul><button class="link" data-act="clear-done" data-list="${k}">Erledigte löschen</button></details>` : ''}
-    </section>`;
-  }).join('')}</div>`;
+  const d0 = startOfDay(), all = alive(S.data.todos), rec = all.filter(x => x.repeat);
+  const upcoming = rec.filter(x => x.due > d0).sort((a, b) => a.due - b.due);
+  $('#main').innerHTML = `<div class="todo-grid">
+    ${todoPanel('today', 'Heute', 'Was steht heute an?', 'Klarer Himmel – heute nichts offen.', all.filter(x => !x.repeat && x.list === 'today').concat(rec.filter(x => x.due <= d0)))}
+    <div class="todo-col">
+      ${todoPanel('later', 'Langfristig', 'Irgendwann, aber sicher …', 'Noch nichts für später geplant.', all.filter(x => !x.repeat && x.list === 'later'))}
+      <section class="panel"><header class="panel-h"><h2>Wiederkehrend</h2><span class="count">${upcoming.length || ''}</span><span class="hint">erscheint am Stichtag unter „Heute“</span></header>
+        <ul class="todos">${upcoming.map(x => todoLi(x, true)).join('') || `<li class="empty">Mit ↻ an einer Aufgabe wird sie zur Routine – täglich, werktags, wöchentlich oder monatlich.</li>`}</ul></section>
+    </div></div>`;
   document.querySelectorAll('.done-box').forEach(d => d.ontoggle = () => S.doneOpen[d.dataset.list] = d.open);
+}
+const REP_OPTS = [['none', 'Nie'], ['daily', 'Täglich'], ['weekdays', 'Werktags'], ['weekly', 'Wöchentlich'], ['biweekly', 'Alle 2 Wochen'], ['monthly', 'Monatlich']];
+function openRepeat(id) {
+  const t = S.data.todos.find(x => x.id === id), r = t.repeat || {};
+  S.rep = { id, type: r.type || 'none', days: r.days ? [...r.days] : [new Date().getDay()], day: r.day || new Date().getDate() };
+  renderRepeat();
+}
+function draftRep() {
+  const r = S.rep; if (r.type === 'none') return null;
+  const o = { type: r.type, anchor: startOfDay() };
+  if (r.type === 'weekly') o.days = r.days.length ? [...r.days] : [new Date().getDay()];
+  if (r.type === 'monthly') o.day = Math.min(31, Math.max(1, parseInt(r.day, 10) || 1));
+  return o;
+}
+const repNextTxt = () => { const rep = draftRep(); return rep ? `Fällig ${fmtDay(firstDue(rep))}, danach ${repLabel(rep)}` : 'Einmalige Aufgabe'; };
+function renderRepeat() {
+  const r = S.rep, t = S.data.todos.find(x => x.id === r.id);
+  showModal(`<div class="modal sheet">
+    <button class="ico close" data-act="close">${I.x}</button>
+    <h2>Wiederholen</h2><p class="sub">${esc(t.text)}</p>
+    <div class="chips">${REP_OPTS.map(([k, l]) => `<button class="chip ${r.type === k ? 'on' : ''}" data-act="rep-type" data-t="${k}">${l}</button>`).join('')}</div>
+    ${r.type === 'weekly' ? `<div class="chips">${[1, 2, 3, 4, 5, 6, 0].map(d => `<button class="chip round ${r.days.includes(d) ? 'on' : ''}" data-act="rep-day" data-d="${d}">${WD[d]}</button>`).join('')}</div>` : ''}
+    ${r.type === 'monthly' ? `<label class="mday">Am <input class="inp" type="number" min="1" max="31" inputmode="numeric" id="repDay" value="${r.day}"> eines jeden Monats</label>` : ''}
+    <p class="repnext" id="repNext">${repNextTxt()}</p>
+    <button class="btn primary block" data-act="rep-save">Speichern</button>
+  </div>`, 'repeat');
 }
 function addTodo(list, text) {
   const now = Date.now();
@@ -714,6 +848,7 @@ function renderNotes() {
   $('#main').innerHTML = `<div class="toolbar">
     <div class="search">${I.search}<input id="noteSearch" type="search" placeholder="Notizen durchsuchen" value="${esc(S.search)}" autocomplete="off"></div>
     <button class="btn primary" data-act="new-note">${I.plus} Notiz</button>
+    <button class="btn" data-act="new-list">${I.list} Checkliste</button>
     <button class="btn" data-act="new-score" title="Spielstand-Zähler, z. B. für die Bar">${I.dice} Spielstand</button>
   </div><div id="notesGrid"></div>`;
   $('#noteSearch').oninput = e => { S.search = e.target.value; renderNotesGrid(); };
@@ -728,23 +863,44 @@ function scorePrev(n) {
 function renderNotesGrid() {
   const q = S.search.trim().toLowerCase();
   const ns = alive(S.data.notes)
-    .filter(n => !q || [n.title, n.body, ...(n.players || []).map(p => p.name)].join(' ').toLowerCase().includes(q))
+    .filter(n => !q || [n.title, n.body, ...(n.players || []).map(p => p.name), ...(n.items || []).map(i => i.text)].join(' ').toLowerCase().includes(q))
     .sort((a, b) => (!!b.pinned - !!a.pinned) || b.updatedAt - a.updatedAt);
   $('#notesGrid').innerHTML = ns.length ? `<div class="notes-grid">${ns.map(n => `
     <article class="note c-${n.color || 'none'}" data-act="open-note" data-id="${n.id}" tabindex="0">
       ${n.pinned ? `<span class="pin">${I.star}</span>` : ''}
       ${n.title ? `<h3>${esc(n.title)}</h3>` : ''}
-      ${n.type === 'score' ? scorePrev(n) + (n.body ? `<div class="prev" style="margin-top:8px">${linkify(esc(n.body.slice(0, 200)))}</div>` : '') : `<div class="prev">${linkify(esc(n.body.slice(0, 600))) || '<span class="muted">Leer</span>'}</div>`}
-      <footer>${n.type === 'score' ? 'Spielstand · ' : ''}${fmtDate(n.updatedAt)}</footer>
+      ${n.type === 'score' ? scorePrev(n) + (n.body ? `<div class="prev" style="margin-top:8px">${linkify(esc(n.body.slice(0, 200)))}</div>` : '') : clPrev(n) + (n.body || !clCount(n).total ? `<div class="prev">${linkify(esc(n.body.slice(0, 600))) || '<span class="muted">Leer</span>'}</div>` : '')}
+      <footer>${n.type === 'score' ? 'Spielstand · ' : ''}${clCount(n).total ? clCount(n).done + '/' + clCount(n).total + ' erledigt · ' : ''}${fmtDate(n.updatedAt)}</footer>
     </article>`).join('')}</div>`
     : `<div class="big-empty"><div class="planet">${logo()}</div>${q ? 'Keine Notiz gefunden.' : 'Noch keine Notizen. Leg mit „Notiz“ los – für Texte, Gesprächsnotizen, Links, alles.'}</div>`;
 }
-function newNote(type) {
+function newNote(type, list) {
   const now = Date.now();
   const n = { id: uid(), type, title: '', body: '', color: 'none', pinned: false, createdAt: now, updatedAt: now };
   if (type === 'score') n.players = [{ name: '', score: 0 }, { name: '', score: 0 }];
+  if (list) n.items = [{ text: '', done: false }];
   S.data.notes.push(n); touch(); openNote(n.id, true);
 }
+const clCount = n => { const its = (n.items || []).filter(i => i.text.trim()); return { total: its.length, done: its.filter(i => i.done).length }; };
+function clPrev(n) {
+  if (!clCount(n).total) return '';
+  const rows = n.items.map((it, i) => it.text.trim() ? `<button class="clp ${it.done ? 'is-done' : ''}" data-act="card-cl" data-i="${i}"><span class="check"></span><span>${esc(it.text)}</span></button>` : '').filter(Boolean);
+  return `<div class="cl-prev">${rows.slice(0, 8).join('')}${rows.length > 8 ? `<div class="muted" style="font-size:13px">+ ${rows.length - 8} weitere</div>` : ''}</div>`;
+}
+function clHTML(n) {
+  const c = clCount(n);
+  return `${n.items.map((it, i) => `<div class="cli ${it.done ? 'is-done' : ''}" data-i="${i}">
+      <button class="check" data-act="cl-toggle" aria-label="Abhaken"></button>
+      <input class="cl-txt" value="${esc(it.text)}" placeholder="Punkt" autocomplete="off" enterkeyhint="next">
+      <button class="rm" data-act="cl-rm" title="Entfernen" aria-label="Entfernen">×</button></div>`).join('')}
+    <div class="cl-acts"><button class="cl-add" data-act="cl-add">${I.plus} Punkt</button>${c.done ? `<span class="muted">${c.done}/${c.total}</span><button class="link" data-act="cl-clear">Erledigte entfernen</button>` : ''}</div>`;
+}
+function clRefresh(n, focusIdx) {
+  if (!n.items.length) { delete n.items; noteChanged(n); openNote(n.id); return; }
+  noteChanged(n); $('#clBox').innerHTML = clHTML(n);
+  if (focusIdx != null) { const ins = document.querySelectorAll('.cl-txt'), el = ins[Math.max(0, Math.min(focusIdx, ins.length - 1))]; if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); } }
+}
+function clAdd(n, at) { n.items.splice(at, 0, { text: '', done: false }); clRefresh(n, at); }
 function linksHTML(body) {
   const ls = [...new Set((body || '').match(/https?:\/\/[^\s<]+[^\s<.,;:!?)\]'"]/g) || [])].slice(0, 30);
   return ls.map(u => `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer" title="${esc(u)}">↗ ${esc(u.replace(/^https?:\/\/(www\.)?/, '').slice(0, 48))}</a>`).join('');
@@ -764,25 +920,28 @@ function noteStat(n) { return `${fmtDate(n.updatedAt)}${n.body ? ' · ' + words(
 function openNote(id, fresh) {
   const n = S.data.notes.find(x => x.id === id); if (!n) return;
   S.noteId = id;
-  showModal(`<div class="modal editor c-${n.color || 'none'}" data-id="${n.id}">
+  showModal(`<div class="modal editor c-${n.color || 'none'} ${n.items ? 'has-cl' : ''}" data-id="${n.id}">
     <div class="ed-top">
       <input class="ed-title" placeholder="${n.type === 'score' ? 'Spiel, z. B. Kicker im Conne Island' : 'Titel'}" value="${esc(n.title)}" maxlength="200" autocomplete="off">
       <button class="ico ${n.pinned ? 'on' : ''}" data-act="pin" title="Anpinnen">${I.star}</button>
+      ${n.type === 'score' ? '' : `<button class="ico" data-act="add-cl" title="${n.items ? 'Checklistenpunkt hinzufügen' : 'Checkliste hinzufügen'}">${I.list}</button>`}
       <button class="ico" data-act="copy" title="Text kopieren">${I.copy}</button>
       ${navigator.share ? `<button class="ico" data-act="share-note" title="Teilen">${I.share}</button>` : ''}
       <button class="ico danger" data-act="del-note" title="Löschen">${I.trash}</button>
       <button class="ico" data-act="close" title="Schließen (Esc)">${I.x}</button>
     </div>
     ${n.type === 'score' ? `<div class="score" id="scoreBox">${scoreHTML(n)}</div>` : ''}
-    <textarea class="ed-body" placeholder="${n.type === 'score' ? 'Notizen zum Spiel …' : 'Einfach losschreiben …'}" spellcheck="true">${esc(n.body)}</textarea>
+    ${n.items ? `<div class="cl" id="clBox">${clHTML(n)}</div>` : ''}
+    <textarea class="ed-body" placeholder="${n.type === 'score' ? 'Notizen zum Spiel …' : n.items ? 'Weitere Notizen …' : 'Einfach losschreiben …'}" spellcheck="true">${esc(n.body)}</textarea>
     <div class="ed-links" id="edLinks">${linksHTML(n.body)}</div>
     <div class="ed-foot"><div class="colors">${COLORS.map(c => `<button class="cdot c-${c} ${(n.color || 'none') === c ? 'on' : ''}" data-act="color" data-c="${c}" title="${CNAME[c]}" aria-label="${CNAME[c]}"></button>`).join('')}</div><span class="ed-stat" id="edStat">${noteStat(n)}</span></div>
   </div>`, 'note');
-  if (fresh) setTimeout(() => (n.type === 'score' ? $('.pname') : $('.ed-body')).focus(), 60);
+  if (fresh) setTimeout(() => (n.type === 'score' ? $('.pname') : n.items ? $('.cl-txt') : $('.ed-body')).focus(), 60);
 }
 function noteText(n) {
   let t = n.title ? n.title + '\n\n' : '';
   if (n.type === 'score') t += [...n.players].sort((a, b) => b.score - a.score).map(p => `${p.name || '–'}: ${p.score}`).join('\n') + (n.body ? '\n\n' : '');
+  if (clCount(n).total) t += n.items.filter(i => i.text.trim()).map(i => (i.done ? '☑ ' : '☐ ') + i.text).join('\n') + (n.body ? '\n\n' : '');
   return t + (n.body || '');
 }
 function curNote() { return S.data.notes.find(x => x.id === S.noteId); }
@@ -790,10 +949,28 @@ function noteChanged(n) { n.updatedAt = Date.now(); touch(); const st = $('#edSt
 function closeNoteCleanup() {
   const n = curNote(); S.noteId = null; if (!n) return;
   const emptyScore = n.type === 'score' && !n.players.some(p => p.name || p.score);
-  if (!n.title.trim() && !n.body.trim() && (n.type !== 'score' || emptyScore)) { n.deleted = true; n.updatedAt = Date.now(); touch(); }
+  if (!n.title.trim() && !n.body.trim() && !clCount(n).total && (n.type !== 'score' || emptyScore)) { n.deleted = true; n.updatedAt = Date.now(); touch(); }
 }
 
 /* ---------- Frachtraum (Medien) ---------- */
+const TTL = [[0, 'Auto-Löschen: aus'], [1, 'Auto-Löschen: nach 1 Tag'], [3, 'Auto-Löschen: nach 3 Tagen'], [7, 'Auto-Löschen: nach 1 Woche'], [30, 'Auto-Löschen: nach 1 Monat'], [90, 'Auto-Löschen: nach 3 Monaten']];
+const TTLN = { 1: '1 Tag', 3: '3 Tagen', 7: '1 Woche', 30: '1 Monat', 90: '3 Monaten' };
+const mediaTTL = () => (S.data.settings && S.data.settings.mediaTTL) || 0;
+function expiry(m) { const t = mediaTTL(); return t && !m.keep ? m.createdAt + t * DAY : 0; }
+function leftTxt(ms) { return ms < DAY ? Math.max(1, Math.ceil(ms / 3600000)) + ' Std' : Math.ceil(ms / DAY) + ' T'; }
+function runAutoDelete() {
+  const now = Date.now(), ex = alive(S.data.media).filter(m => expiry(m) && expiry(m) < now);
+  if (!ex.length) return;
+  ex.forEach(m => { m.deleted = true; m.updatedAt = now; queued(() => delFile('files/' + m.id)).catch(() => { }); });
+  touch(); if (S.tab === 'media' && !S.modal) renderMedia();
+}
+function setTTL(v) {
+  const lim = Date.now() - v * DAY;
+  const n = v ? alive(S.data.media).filter(m => !m.keep && m.createdAt < lim).length : 0;
+  if (n && !confirm(`${n} ${n === 1 ? 'Datei ist' : 'Dateien sind'} schon älter und ${n === 1 ? 'wird' : 'werden'} sofort gelöscht (außer „Behalten“). Fortfahren?`)) return renderMedia();
+  S.data.settings = { mediaTTL: v, updatedAt: Date.now() }; touch(); runAutoDelete(); renderMedia();
+  toast(v ? `Dateien werden nach ${TTLN[v]} automatisch gelöscht` : 'Automatisches Löschen ist aus');
+}
 function renderMedia() {
   const items = alive(S.data.media).sort((a, b) => b.createdAt - a.createdAt);
   const total = items.reduce((s, x) => s + (x.size || 0), 0);
@@ -802,7 +979,9 @@ function renderMedia() {
     const d = startOfDay(m.createdAt);
     if (d !== lastDay) { grid += (lastDay === null ? '' : '</div>') + `<h3 class="day-h">${dayLabel(m.createdAt)}</h3><div class="media-grid">`; lastDay = d; }
     const ext = (m.name.split('.').pop() || 'Datei').slice(0, 5);
+    const ex = expiry(m), left = ex - Date.now();
     grid += `<button class="tile ${S.picked.has(m.id) ? 'picked' : ''}" data-act="open-media" data-id="${m.id}" title="${esc(m.name)}">
+      ${ex ? `<span class="tb ${left < DAY ? 'soon' : ''}">${leftTxt(left)}</span>` : m.keep && mediaTTL() ? `<span class="tb">${I.star}</span>` : ''}
       ${m.thumb ? `<img src="${m.thumb}" alt="" loading="lazy">` : `<span class="ficon">${esc(ext)}</span>`}
       ${m.mime?.startsWith('video/') ? `<span class="vb">${I.play}${m.dur ? fmtDur(m.dur) : ''}</span>` : ''}
       <span class="sel">${S.picked.has(m.id) ? I.check : ''}</span></button>`;
@@ -816,11 +995,13 @@ function renderMedia() {
     : `<div class="toolbar">
        <button class="btn primary" data-act="pick">${I.up} Hochladen</button>
        ${items.length ? `<button class="btn" data-act="sel-on">${I.select} Auswählen</button>` : ''}
+       <label class="ttl" title="Dateien automatisch löschen">${I.clock}<select id="ttlSel">${TTL.map(([v, l]) => `<option value="${v}" ${mediaTTL() === v ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
        <span class="usage">${items.length} ${items.length === 1 ? 'Datei' : 'Dateien'} · ${fmtSize(total)}</span></div>
      <div class="drop" id="drop">${I.up} Dateien hierher ziehen oder mit Strg+V einfügen</div>`}
     <div class="uploads" id="uploads"></div>
     <div class="${S.selecting ? 'selecting' : ''}">${grid || (S.uploads.length ? '' : `<div class="big-empty"><div class="planet">${logo()}</div>Der Frachtraum ist leer.<br>Bilder, Videos oder Dateien hochladen – sie sind dann auf allen Geräten da.</div>`)}</div>`;
   renderUploads();
+  const ts = $('#ttlSel'); if (ts) ts.onchange = e => setTTL(+e.target.value);
   const dz = $('#drop');
   if (dz) {
     dz.ondragover = e => { e.preventDefault(); dz.classList.add('over'); };
@@ -899,13 +1080,14 @@ async function openMedia(id) {
   S.viewId = id;
   const canShare = !!navigator.canShare;
   showModal(`<div class="viewer">
-    <div class="v-top"><div class="meta"><b>${esc(m.name)}</b> · ${fmtSize(m.size)} · ${fmtDate(m.createdAt)}</div><button class="ico" data-act="close" title="Schließen (Esc)">${I.x}</button></div>
+    <div class="v-top"><div class="meta"><b>${esc(m.name)}</b> · ${fmtSize(m.size)} · ${fmtDate(m.createdAt)}${expiry(m) ? ' · wird ' + fmtDay(startOfDay(expiry(m))) + ' gelöscht' : ''}</div><button class="ico" data-act="close" title="Schließen (Esc)">${I.x}</button></div>
     <div class="v-stage" id="vStage"><span class="spin"></span>
       ${i > 0 ? `<button class="v-nav l" data-act="v-prev" aria-label="Vorheriges">${I.left}</button>` : ''}
       ${i < list.length - 1 ? `<button class="v-nav r" data-act="v-next" aria-label="Nächstes">${I.right}</button>` : ''}</div>
     <div class="v-bar">
       ${canShare ? `<button class="btn primary" data-act="v-share">${I.share} Teilen / Sichern</button>` : ''}
       <button class="btn ${canShare ? '' : 'primary'}" data-act="v-dl">${I.down} Herunterladen</button>
+      ${mediaTTL() || m.keep ? `<button class="btn ${m.keep ? 'on' : ''}" data-act="v-keep" title="Von automatischem Löschen ausnehmen">${I.star} ${m.keep ? 'Wird behalten' : 'Behalten'}</button>` : ''}
       <button class="btn danger" data-act="v-del">${I.trash} Löschen</button>
     </div></div>`, 'viewer');
   try {
@@ -964,6 +1146,35 @@ async function processShared() {
       S.data.notes.push({ id: uid(), type: 'text', title: it.title || 'Geteilt', body: text, color: 'uranus', pinned: false, createdAt: now, updatedAt: now });
       touch(); if (!(it.files && it.files.length)) switchTab('notes'); render(); toast('Als Notiz gespeichert');
     }
+  }
+}
+
+/* ---------- Schnellnotiz ---------- */
+function openQuick() {
+  const tg = localStorage.getItem('kn-qt') || 'note';
+  showModal(`<div class="modal sheet">
+    <button class="ico close" data-act="close">${I.x}</button>
+    <h2>Schnellnotiz</h2><p class="sub">Kurz festhalten – sortieren geht später.</p>
+    <textarea class="inp qtxt" id="qTxt" rows="5" placeholder="Gedanke, Link, Telefonnummer …"></textarea>
+    <div class="chips" style="margin:12px 0 10px">${[['note', 'Als Notiz'], ['today', 'To-do heute'], ['later', 'To-do später']].map(([k, l]) => `<button class="chip ${tg === k ? 'on' : ''}" data-act="q-target" data-t="${k}">${l}</button>`).join('')}</div>
+    <p class="qhint" id="qHint">${tg === 'note' ? '' : 'Jede Zeile wird eine eigene Aufgabe.'}</p>
+    <button class="btn primary block" data-act="q-save">Speichern <span class="kbd">Strg+Enter</span></button>
+  </div>`, 'quick');
+  setTimeout(() => { const t = $('#qTxt'); t && t.focus(); }, 60);
+}
+function saveQuick() {
+  const v = ($('#qTxt').value || '').trim(); if (!v) return closeModal();
+  const tg = localStorage.getItem('kn-qt') || 'note', now = Date.now();
+  if (tg === 'note') {
+    const id = uid();
+    S.data.notes.push({ id, type: 'text', title: '', body: v, color: 'none', pinned: false, createdAt: now, updatedAt: now });
+    touch(); closeModal();
+    toast('Notiz gespeichert', 'Öffnen', () => { switchTab('notes'); setTimeout(() => openNote(id), 80); });
+  } else {
+    const lines = v.split('\n').map(x => x.replace(/^\s*([-*•]|\d+[.)])\s*(\[[ xX]?\]\s*)?/, '').trim()).filter(Boolean);
+    lines.forEach((t, i) => S.data.todos.push({ id: uid(), text: t, list: tg, done: false, order: now + i, createdAt: now, updatedAt: now }));
+    touch(); closeModal();
+    toast((lines.length === 1 ? 'Aufgabe' : lines.length + ' Aufgaben') + (tg === 'today' ? ' für heute angelegt' : ' für später angelegt'));
   }
 }
 
@@ -1037,6 +1248,7 @@ window.addEventListener('popstate', () => { if (S.modal) doClose(); });
 $('#tabs').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) switchTab(b.dataset.tab); });
 $('#syncBtn').onclick = () => sync();
 $('#setBtn').onclick = () => openSettings();
+$('#fab').onclick = () => openQuick();
 $('#filePick').onchange = e => { uploadFiles([...e.target.files]); e.target.value = ''; };
 
 const main = $('#main');
@@ -1049,7 +1261,17 @@ main.addEventListener('click', e => {
   const b = e.target.closest('[data-act]'); if (!b) return;
   const act = b.dataset.act, li = b.closest('[data-id]'), id = li && li.dataset.id;
   switch (act) {
-    case 'toggle': { const t = S.data.todos.find(x => x.id === id); upd('todos', id, { done: !t.done, doneAt: !t.done ? Date.now() : null }); render(); break; }
+    case 'toggle': {
+      const t = S.data.todos.find(x => x.id === id);
+      if (t.repeat && !t.done) {
+        const prev = t.due, nx = nextDue(t.repeat, Math.max(startOfDay(), t.due));
+        li.classList.add('is-done');
+        setTimeout(() => { upd('todos', id, { due: nx, lastDone: Date.now() }); render(); toast('Erledigt · wieder ' + fmtDay(nx), 'Rückgängig', () => { upd('todos', id, { due: prev }); render(); }); }, 380);
+        break;
+      }
+      upd('todos', id, { done: !t.done, doneAt: !t.done ? Date.now() : null }); render(); break;
+    }
+    case 'repeat': openRepeat(id); break;
     case 'move': { const t = S.data.todos.find(x => x.id === id); upd('todos', id, { list: t.list === 'today' ? 'later' : 'today', order: Date.now() }); render(); break; }
     case 'del-todo': { upd('todos', id, { deleted: true }); render(); toast('Aufgabe gelöscht', 'Rückgängig', () => { upd('todos', id, { deleted: false }); render(); }); break; }
     case 'clear-done': {
@@ -1059,6 +1281,8 @@ main.addEventListener('click', e => {
     }
     case 'new-note': newNote('text'); break;
     case 'new-score': newNote('score'); break;
+    case 'new-list': newNote('text', true); break;
+    case 'card-cl': { const n = S.data.notes.find(x => x.id === id), it = n.items[+b.dataset.i]; it.done = !it.done; n.updatedAt = Date.now(); touch(); renderNotesGrid(); break; }
     case 'open-note': openNote(id); break;
     case 'pick': $('#filePick').click(); break;
     case 'sel-on': S.selecting = true; S.picked.clear(); renderMedia(); break;
@@ -1109,6 +1333,22 @@ ov.addEventListener('click', e => {
       else n.players.splice(i, 1);
       noteChanged(n); $('#scoreBox').innerHTML = scoreHTML(n); break;
     }
+    case 'add-cl': if (!n.items) { n.items = [{ text: '', done: false }]; noteChanged(n); openNote(n.id); setTimeout(() => { const el = $('.cl-txt'); el && el.focus(); }, 30); } else clAdd(n, n.items.length); break;
+    case 'cl-add': clAdd(n, n.items.length); break;
+    case 'cl-toggle': { const it = n.items[+b.closest('.cli').dataset.i]; it.done = !it.done; n.items = n.items.filter(x => !x.done).concat(n.items.filter(x => x.done)); clRefresh(n); break; }
+    case 'cl-rm': n.items.splice(+b.closest('.cli').dataset.i, 1); clRefresh(n); break;
+    case 'cl-clear': n.items = n.items.filter(x => !x.done); clRefresh(n); break;
+    case 'rep-type': S.rep.type = b.dataset.t; renderRepeat(); break;
+    case 'rep-day': { const d = +b.dataset.d, ds = S.rep.days; ds.includes(d) ? ds.splice(ds.indexOf(d), 1) : ds.push(d); renderRepeat(); break; }
+    case 'rep-save': {
+      const rep = draftRep(), id = S.rep.id, t = S.data.todos.find(x => x.id === id);
+      if (rep) upd('todos', id, { repeat: rep, due: firstDue(rep), done: false });
+      else if (t.repeat) upd('todos', id, { repeat: null, due: null, list: 'today', order: Date.now() });
+      closeModal(); if (rep) toast('Wiederholt sich ' + repLabel(rep)); break;
+    }
+    case 'q-target': localStorage.setItem('kn-qt', b.dataset.t); ov.querySelectorAll('[data-act=q-target]').forEach(c => c.classList.toggle('on', c === b)); $('#qHint').textContent = b.dataset.t === 'note' ? '' : 'Jede Zeile wird eine eigene Aufgabe.'; $('#qTxt').focus(); break;
+    case 'q-save': saveQuick(); break;
+    case 'v-keep': if (m) { upd('media', m.id, { keep: !m.keep }); openMedia(m.id); } break;
     case 'add-player': n.players.push({ name: '', score: 0 }); noteChanged(n); $('#scoreBox').innerHTML = scoreHTML(n); setTimeout(() => { const ps = ov.querySelectorAll('.pname'); ps[ps.length - 1].focus(); }); break;
     case 'reset-score': n.players.forEach(p => p.score = 0); noteChanged(n); $('#scoreBox').innerHTML = scoreHTML(n); break;
     case 'v-prev': stepMedia(-1); break;
@@ -1129,17 +1369,30 @@ ov.addEventListener('click', e => {
 });
 let _linkT;
 ov.addEventListener('input', e => {
+  if (e.target.id === 'repDay') { S.rep.day = e.target.value; $('#repNext').textContent = repNextTxt(); return; }
   const n = curNote(); if (!n) return;
   const el = e.target;
+  if (el.classList.contains('cl-txt')) { n.items[+el.closest('.cli').dataset.i].text = el.value; noteChanged(n); return; }
   if (el.classList.contains('ed-title')) { n.title = el.value; noteChanged(n); }
   else if (el.classList.contains('ed-body')) { n.body = el.value; noteChanged(n); clearTimeout(_linkT); _linkT = setTimeout(() => { const l = $('#edLinks'); if (l) l.innerHTML = linksHTML(n.body); }, 400); }
   else if (el.classList.contains('pname')) { n.players[+el.closest('.player').dataset.i].name = el.value; noteChanged(n); }
   else if (el.classList.contains('pscore')) { n.players[+el.closest('.player').dataset.i].score = parseInt(el.value, 10) || 0; noteChanged(n); }
 });
+ov.addEventListener('keydown', e => {
+  const el = e.target;
+  if (el.classList.contains('ed-title') && e.key === 'Enter' && !e.isComposing) { e.preventDefault(); const nx = $('.cl-txt') || $('.pname') || $('.ed-body'); nx && nx.focus(); return; }
+  if (!el.classList.contains('cl-txt')) return;
+  const n = curNote(), i = +el.closest('.cli').dataset.i;
+  if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); clAdd(n, i + 1); }
+  else if (e.key === 'Backspace' && !el.value && n.items.length > 1) { e.preventDefault(); n.items.splice(i, 1); clRefresh(n, i - 1); }
+});
 ov.addEventListener('change', e => { if (e.target.classList.contains('pscore')) $('#scoreBox').innerHTML = scoreHTML(curNote()); });
 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && S.modal) { e.preventDefault(); closeModal(); }
+  if (S.modal === 'quick' && e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); saveQuick(); }
+  const t = e.target, typing = t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable;
+  if (!S.modal && !typing && !$('#app').hidden && (e.key === 'n' || e.key === 'N') && !e.ctrlKey && !e.metaKey && !e.altKey) { e.preventDefault(); openQuick(); }
   if (S.modal === 'viewer' && e.key === 'ArrowLeft') stepMedia(-1);
   if (S.modal === 'viewer' && e.key === 'ArrowRight') stepMedia(1);
 });
