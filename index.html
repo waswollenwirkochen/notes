@@ -82,7 +82,7 @@ svg{width:20px;height:20px;flex:none}
 /* ---------- Kopf & Navigation ---------- */
 #app{min-height:100dvh}
 .top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:16px;padding:calc(12px + var(--safe-t)) 20px 12px;background:linear-gradient(to bottom,rgba(4,5,13,.92),rgba(4,5,13,.6) 70%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.brand{display:flex;align-items:center;gap:10px;font:700 18px var(--head);letter-spacing:.03em}
+.brand{display:flex;align-items:center;gap:10px;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:default;touch-action:manipulation;font:700 18px var(--head);letter-spacing:.03em}
 .brand svg{width:30px;height:30px}
 .tabs{display:flex;gap:4px;margin:0 auto;padding:5px;border-radius:999px;background:var(--panel);border:1px solid var(--line)}
 .tab{display:flex;align-items:center;gap:8px;padding:9px 18px;border-radius:999px;color:var(--muted);font-weight:600;font-size:15px;transition:color .2s,background .25s}
@@ -336,6 +336,8 @@ main{max-width:1120px;margin:0 auto;padding:8px 20px 60px}
   .hide-m{display:none}
 }
 /* Tresor */
+.vault-h{display:flex;align-items:center;gap:10px;font:600 18px var(--head);margin:4px 2px 14px;color:var(--star)}
+.vault-h svg{width:22px;height:22px}
 .vault-gate{max-width:430px;margin:28px auto;padding:30px 24px;text-align:center}
 .vg-ico{width:66px;height:66px;margin:0 auto 14px;border-radius:22px;display:grid;place-items:center;background:radial-gradient(circle at 30% 30%,rgba(255,213,126,.28),rgba(165,148,255,.12));color:var(--star);box-shadow:0 0 34px rgba(255,213,126,.16)}
 .vg-ico svg{width:30px;height:30px}
@@ -505,7 +507,7 @@ const kvDel = k => store('kv', 'readwrite', s => s.delete(k));
 
 /* ---------- Zustand ---------- */
 const S = {
-  data: emptyData(), tab: localStorage.getItem('kn-tab') || 'todos',
+  data: emptyData(), tab: ({ todos: 1, notes: 1, media: 1 })[localStorage.getItem('kn-tab')] ? localStorage.getItem('kn-tab') : 'todos',
   key: null, token: null, cfg: null, meta: null, sha: null,
   rev: 0, sync: 'idle', lastSync: 0, search: '', selecting: false, picked: new Set(),
   modal: null, noteId: null, viewId: null, uploads: [], doneOpen: {}, pendingRender: false,
@@ -748,12 +750,12 @@ async function enterApp() {
 function switchTab(t) {
   if (S.tab === t) return;
   if (S.tab === 'vault') vaultLock();
-  S.tab = t; localStorage.setItem('kn-tab', t); S.selecting = false; S.picked.clear();
+  S.tab = t; if (t !== 'vault') localStorage.setItem('kn-tab', t); S.selecting = false; S.picked.clear();
   render(); window.scrollTo({ top: 0 });
 }
 function renderTabs() {
   const d0 = startOfDay(), openToday = alive(S.data.todos).filter(x => x.repeat ? x.due <= d0 : (x.list === 'today' && !x.done)).length;
-  $('#tabs').innerHTML = TABS.map(([k, l, ic]) => `<button class="tab ${S.tab === k ? 'on' : ''}" data-tab="${k}">${ic}<span>${l}</span>${k === 'todos' && openToday ? `<span class="badge">${openToday}</span>` : ''}</button>`).join('');
+  $('#tabs').innerHTML = TABS.filter(([k]) => k !== 'vault').map(([k, l, ic]) => `<button class="tab ${S.tab === k ? 'on' : ''}" data-tab="${k}">${ic}<span>${l}</span>${k === 'todos' && openToday ? `<span class="badge">${openToday}</span>` : ''}</button>`).join('');
 }
 function render() {
   S.pendingRender = false;
@@ -1311,7 +1313,7 @@ function renderVault() {
     if (matchMedia('(hover:hover)').matches) f.pw.focus();
     return;
   }
-  m.innerHTML = `<div class="toolbar">
+  m.innerHTML = `<h2 class="vault-h">${I.shield} Tresor</h2><div class="toolbar">
       <div class="search">${I.search}<input id="vSearch" type="search" placeholder="Tresor durchsuchen" value="${esc(V.q)}" autocomplete="off"></div>
       <button class="btn primary" data-act="vt-new">${I.plus} Eintrag</button>
       <button class="btn" data-act="vt-lock" title="Tresor sperren" aria-label="Tresor sperren">${I.lock}<span class="hide-m">Sperren</span></button></div>
@@ -1473,6 +1475,13 @@ window.addEventListener('popstate', () => { if (S.modal) doClose(); });
 $('#tabs').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) switchTab(b.dataset.tab); });
 $('#syncBtn').onclick = () => sync();
 $('#setBtn').onclick = () => openSettings();
+// Versteckter Zugang zum Tresor: 5× schnell aufs Logo tippen
+let _taps = 0, _tapT;
+$('#brand').addEventListener('click', () => {
+  clearTimeout(_tapT); _taps++;
+  if (_taps >= 5) { _taps = 0; if (navigator.vibrate) navigator.vibrate(25); if (S.modal) closeModal(); S.tab === 'vault' ? null : switchTab('vault'); return; }
+  _tapT = setTimeout(() => _taps = 0, 700);
+});
 $('#fab').onclick = () => openQuick();
 $('#filePick').onchange = e => { uploadFiles([...e.target.files]); e.target.value = ''; };
 
