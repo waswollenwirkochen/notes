@@ -7,6 +7,7 @@ Persönliches Notizbuch für Laptop und Smartphone – als GitHub Page.
 - **Notizen**: freie Notizblöcke mit Suche, Anpinnen, Farben, Link-Chips, Kopieren/Teilen, **Checklisten** (auch direkt auf der Karte abhakbar) – plus **Spielstand**-Zähler.
 - **Frachtraum**: Bilder, Videos und Dateien zwischen Geräten hin- und herschieben (Upload, Drag & Drop, Strg+V), ansehen, teilen/sichern, löschen.
   **Auto-Löschen** nach 1 Tag, 3 Tagen, 1 Woche, 1 Monat oder 3 Monaten; einzelne Dateien lassen sich mit „Behalten“ ausnehmen.
+- **Tresor**: PINs, Passwörter und geheime Notizen mit eigenem Tresor-Passwort. Doppelt verschlüsselt, Schlüssel nur im Arbeitsspeicher, sperrt sich automatisch (3 Min. Inaktivität, Reiterwechsel, App im Hintergrund). Kopierte Geheimnisse werden nach 30 s aus der Zwischenablage gelöscht; Passwort-Generator inklusive.
 - **Schnellnotiz**: runder Knopf unten rechts oder Taste **N** – als Notiz oder direkt als To-do (jede Zeile eine Aufgabe). Auf Android auch per langem Druck aufs App-Icon.
 
 ## So funktioniert der Zugriffsschutz
@@ -37,4 +38,5 @@ Ohne Token *und* Passphrase kommt niemand an die Inhalte – auch GitHub selbst 
 |---|---|
 | `meta.json` | Salt + Prüfwert (unverschlüsselt, enthält nichts Inhaltliches) |
 | `data.enc` | To-dos, Notizen, Medien-Index inkl. Vorschaubildern (verschlüsselt) |
+| `vault.enc` | Tresor – doppelt verschlüsselt (App-Schlüssel + eigenes Tresor-Passwort) |
 | `files/<id>` | die einzelnen Dateien (verschlüsselt) |
