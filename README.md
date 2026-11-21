@@ -1,4 +1,4 @@
-# Kosmos · Notizbuch
+# HeadSpace · Notizbuch
 
 Persönliches Notizbuch für Laptop und Smartphone – als GitHub Page.
 
@@ -23,7 +23,7 @@ Ohne Token *und* Passphrase kommt niemand an die Inhalte – auch GitHub selbst 
    - Permissions → Repository → **Contents: Read and write**
 3. In diesem Repo **GitHub Pages** aktivieren: Settings → Pages → *Deploy from a branch* → `main` / `/ (root)`.
 4. Seite öffnen, Token + Passphrase eingeben → beim ersten Mal wird das Notizbuch angelegt.
-5. Auf dem Handy: „Zum Home-Bildschirm hinzufügen“. Unter Android erscheint Kosmos danach auch im **Teilen**-Menü.
+5. Auf dem Handy: „Zum Home-Bildschirm hinzufügen“. Unter Android erscheint HeadSpace danach auch im **Teilen**-Menü.
 
 ## Hinweise
 

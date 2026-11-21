@@ -7,8 +7,8 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Kosmos">
-<title>Kosmos · Notizbuch</title>
+<meta name="apple-mobile-web-app-title" content="HeadSpace">
+<title>HeadSpace · Notizbuch</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -363,7 +363,7 @@ main{max-width:1120px;margin:0 auto;padding:8px 20px 60px}
 <script>
 'use strict';
 /* =====================================================================
-   Kosmos · persönliches, verschlüsseltes Notizbuch
+   HeadSpace · persönliches, verschlüsseltes Notizbuch
    Daten: AES-GCM (256) mit PBKDF2-Schlüssel aus der Passphrase,
    gespeichert in einem privaten GitHub-Repo über die REST-API.
    ===================================================================== */
@@ -645,7 +645,7 @@ function renderGate(mode, msg) {
   $('#app').hidden = true; const g = $('#gate'); g.hidden = false;
   const c = S.cfg || { owner: 'waswollenwirkochen', repo: 'notes-data' };
   g.innerHTML = `<div class="gate-card">
-    <span class="logo">${logo()}</span><h1>Kosmos</h1>
+    <span class="logo">${logo()}</span><h1>HeadSpace</h1>
     <p class="sub">${mode === 'unlock' ? 'Gesperrt – Passphrase eingeben' : 'Dein verschlüsseltes Notizbuch'}</p>
     <form id="gateForm" autocomplete="off">
       ${mode === 'setup' ? `
@@ -713,7 +713,7 @@ async function doUnlock(f) {
    ===================================================================== */
 async function enterApp() {
   $('#gate').hidden = true; $('#app').hidden = false;
-  $('#brand').innerHTML = logo() + '<span>Kosmos</span>';
+  $('#brand').innerHTML = logo() + '<span>HeadSpace</span>';
   $('#setBtn').innerHTML = I.gear; $('#fab').innerHTML = I.pen;
   await loadCache();
   render(); sync().then(processShared);
@@ -1200,7 +1200,7 @@ async function openSettings() {
       <button class="btn" data-act="lock">${I.lock} Sperren</button>
       <button class="btn" data-act="new-token">Neuen Token eintragen</button>
       <button class="btn danger" data-act="logout">Auf diesem Gerät abmelden</button>
-      <p>Tipp: Im Browser „Zum Home-Bildschirm hinzufügen“ – dann startet Kosmos wie eine App${/android/i.test(navigator.userAgent) ? ' und taucht im „Teilen“-Menü auf' : ''}.</p>
+      <p>Tipp: Im Browser „Zum Home-Bildschirm hinzufügen“ – dann startet HeadSpace wie eine App${/android/i.test(navigator.userAgent) ? ' und taucht im „Teilen“-Menü auf' : ''}.</p>
     </div></div>`, 'settings');
   try { const r = await ghJson(''); const el = $('#repoSize'); if (el) el.textContent = fmtSize(r.size * 1024); } catch { const el = $('#repoSize'); if (el) el.textContent = '–'; }
 }
@@ -1221,7 +1221,7 @@ async function squashHistory() {
 }
 function backup() {
   const d = { exportiert: new Date().toISOString(), todos: alive(S.data.todos), notizen: alive(S.data.notes), dateien: alive(S.data.media).map(({ thumb, ...m }) => m) };
-  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' })), download: `kosmos-backup-${new Date().toISOString().slice(0, 10)}.json` });
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' })), download: `headspace-backup-${new Date().toISOString().slice(0, 10)}.json` });
   document.body.append(a); a.click(); a.remove();
 }
 
