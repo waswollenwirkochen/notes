@@ -336,10 +336,8 @@
   }
   function strip(el) {
     if (!el) return;
-    let list = []; try { list = bigSoon(); } catch { }
     const m = A.geo('Moon', new Date());
-    el.innerHTML = `${list.length ? `<section class="panel sk-strip"><div class="sk-strip-h"><h2>Am Himmel demnächst</h2><span class="hint">nächste 2 Wochen</span></div><div class="ev-list">${list.map(evRow).join('')}</div></section>` : ''}
-      <button class="moon-deco" data-sk="gosky" aria-label="Stargazing öffnen" title="${phaseName(m.phase, m.illum)} · ${pct(m.illum)}">${moonSVG(132, m.illum, m.waxing)}</button>`;
+    el.innerHTML = `<button class="moon-deco" data-sk="gosky" aria-label="Stargazing öffnen" title="${phaseName(m.phase, m.illum)} · ${pct(m.illum)}">${moonSVG(132, m.illum, m.waxing)}</button>`;
   }
   function fact(el) {
     if (!el || !window.SkyFacts) return;
