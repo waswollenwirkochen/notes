@@ -397,6 +397,11 @@ main{max-width:1120px;margin:0 auto;padding:8px 20px 60px}
 .ev-main b{font-weight:600}
 .ev-main span{font-size:13px;color:var(--muted)}
 .ev-chip{font-size:12px;color:var(--star);white-space:nowrap}
+.fact{display:flex;gap:14px;align-items:flex-start;padding:14px 18px;margin:0 0 18px;border-radius:var(--r);border:1px solid rgba(255,213,126,.22);background:linear-gradient(120deg,rgba(255,213,126,.07),rgba(165,148,255,.06) 60%,rgba(98,230,216,.05));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.fact-ic{flex:none;width:34px;height:34px;border-radius:11px;display:grid;place-items:center;color:var(--star);background:rgba(255,213,126,.12);margin-top:2px}
+.fact-ic svg{width:18px;height:18px;fill:var(--star)}
+.fact-h{font:600 11px var(--head);letter-spacing:.08em;text-transform:uppercase;color:var(--star);margin-bottom:3px}
+.fact p{margin:0;font-size:14.5px;line-height:1.55;color:#dedcf3}
 .sk-strip{margin-bottom:0;padding:16px}
 .moon-deco{display:block;margin:34px auto 6px;border-radius:50%;position:relative;transition:transform .4s cubic-bezier(.2,.9,.3,1.2),filter .4s;filter:drop-shadow(0 0 26px rgba(255,240,200,.28)) drop-shadow(0 0 70px rgba(165,148,255,.18))}
 .moon-deco::after{content:"";position:absolute;inset:-18px;border-radius:50%;border:1px solid rgba(255,240,200,.08);box-shadow:0 0 0 18px rgba(255,240,200,.025)}
@@ -586,6 +591,7 @@ main{max-width:1120px;margin:0 auto;padding:8px 20px 60px}
 <script src="astro.js"></script>
 <script src="sky-data.js"></script>
 <script src="sky-sagas.js"></script>
+<script src="sky-facts.js"></script>
 <script src="sky-charts.js"></script>
 <script src="sky.js"></script>
 <script>
@@ -1040,7 +1046,7 @@ function todoPanel(k, t, ph, em, items) {
 function renderTodos() {
   const d0 = startOfDay(), all = alive(S.data.todos), rec = all.filter(x => x.repeat);
   const upcoming = rec.filter(x => x.due > d0).sort((a, b) => a.due - b.due);
-  $('#main').innerHTML = `<div class="todo-grid">
+  $('#main').innerHTML = `<div id="dailyFact"></div><div class="todo-grid">
     ${todoPanel('today', 'Heute', 'Was steht heute an?', 'Klarer Himmel – heute nichts offen.', all.filter(x => !x.repeat && x.list === 'today').concat(rec.filter(x => x.due <= d0)))}
     <div class="todo-col">
       ${todoPanel('later', 'Langfristig', 'Irgendwann, aber sicher …', 'Noch nichts für später geplant.', all.filter(x => !x.repeat && x.list === 'later'))}
@@ -1048,7 +1054,7 @@ function renderTodos() {
         <ul class="todos">${upcoming.map(x => todoLi(x, true)).join('') || `<li class="empty">Mit ↻ an einer Aufgabe wird sie zur Routine – täglich, werktags, wöchentlich oder monatlich.</li>`}</ul></section>
     </div></div><div id="skStrip" class="sk-bottom"></div>`;
   document.querySelectorAll('.done-box').forEach(d => d.ontoggle = () => S.doneOpen[d.dataset.list] = d.open);
-  try { Sky.strip($('#skStrip')); } catch (e) { console.warn(e); }
+  try { Sky.strip($('#skStrip')); Sky.fact($('#dailyFact')); } catch (e) { console.warn(e); }
 }
 const REP_OPTS = [['none', 'Nie'], ['daily', 'Täglich'], ['weekdays', 'Werktags'], ['weekly', 'Wöchentlich'], ['biweekly', 'Alle 2 Wochen'], ['monthly', 'Monatlich']];
 function openRepeat(id) {

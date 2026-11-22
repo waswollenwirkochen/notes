@@ -341,6 +341,12 @@
     el.innerHTML = `${list.length ? `<section class="panel sk-strip"><div class="sk-strip-h"><h2>Am Himmel demnächst</h2><span class="hint">nächste 2 Wochen</span></div><div class="ev-list">${list.map(evRow).join('')}</div></section>` : ''}
       <button class="moon-deco" data-sk="gosky" aria-label="Stargazing öffnen" title="${phaseName(m.phase, m.illum)} · ${pct(m.illum)}">${moonSVG(132, m.illum, m.waxing)}</button>`;
   }
+  function fact(el) {
+    if (!el || !window.SkyFacts) return;
+    const d = new Date(), start = new Date(d.getFullYear(), 0, 0);
+    const doy = Math.floor((d - start) / DAYMS), idx = (doy + d.getFullYear() * 7) % SkyFacts.length;
+    el.innerHTML = `<section class="fact"><span class="fact-ic">${IC.star}</span><div><div class="fact-h">Kosmos-Fakt des Tages</div><p>${esc(SkyFacts[idx])}</p></div></section>`;
+  }
   function checkNew() {
     if (S.modal) return;
     let seen = []; try { seen = JSON.parse(localStorage.getItem('hs-seen-ev') || '[]'); } catch { }
@@ -566,5 +572,5 @@
     }
   });
 
-  window.Sky = { render, badge, strip, checkNew, openEvent, moonSVG, phaseName, loadWx, _computeEvents: computeEvents };
+  window.Sky = { fact, render, badge, strip, checkNew, openEvent, moonSVG, phaseName, loadWx, _computeEvents: computeEvents };
 })();
