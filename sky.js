@@ -467,7 +467,7 @@
         const html = item({ id: key, icon: `<span class="pl-dot" style="background:${P.color}"></span>`, name: P.name, sub: `${P.type} · ${extra}`, pos: up ? b : null, mag: b.mag, visible,
           note: why + (times ? `<br><span class="muted">${times}</span>` : ''),
           body: `<div class="sk-sec"><h4>${IC.pin} So findest du ihn</h4><p>${esc(P.find)}</p></div>${gear(P)}${facts(P.facts)}`,
-          fig: () => `<div class="fig-art">${key === 'Moon' ? `<div class="moon-art">${moonSVG(170, b.illum, b.waxing)}</div>` : SkyCharts.planetArt(key)}<span>Illustration</span></div><div class="fig-map">${SkyCharts.finder(b.ra, b.dec, P.name, { type: 'planet', color: P.color, fov: 42 })}<span>Position zwischen den Sternen</span></div>` });
+          fig: () => `<div class="fig-art">${key === 'Moon' ? `<div class="moon-art">${moonSVG(170, b.illum, b.waxing)}</div><span>aktuelle Phase</span>` : SkyCharts.photo(key, `${SkyCharts.planetArt(key)}<span>Illustration</span>`, P.name)}</div><div class="fig-map">${SkyCharts.finder(b.ra, b.dec, P.name, { type: 'planet', color: P.color, fov: 42 })}<span>Position zwischen den Sternen</span></div>` });
         const sc = (WOW[key] + (key === 'Mars' && b.elong > 140 ? 1 : 0)) * 18 + Math.min(b.alt, 60) * 0.5;
         (visible ? vis : off).push([visible ? sc : -90, html]);
       }
@@ -500,7 +500,7 @@
       const lv = ['', 'leicht', 'mittel', 'anspruchsvoll'][x.level];
       const html = item({ id: x.id, icon: dsoIcon(x.type), color: '#62e6d8', name: `${x.name}`, sub: `${x.code} · ${x.type} · ${x.con} · ${lv}`, pos: p.alt > 0 ? p : null, mag: x.mag, visible, note: why + `<br><span class="muted">Entfernung ${x.dist}</span>`,
         body: `<div class="sk-sec"><h4>${IC.pin} So findest du es</h4><p>${esc(x.find)}</p></div>${gear(x)}${facts(x.facts)}`,
-        fig: () => `<div class="fig-art">${SkyCharts.dsoArt(x)}<span>Illustration (Smart-Teleskop-Eindruck)</span></div><div class="fig-map">${SkyCharts.finder(x.ra, x.dec, x.code, { fov: 32 })}<span>Aufsuchkarte</span></div>` });
+        fig: () => `<div class="fig-art">${SkyCharts.photo(x.id, `${SkyCharts.dsoArt(x)}<span>Illustration</span>`, x.name)}</div><div class="fig-map">${SkyCharts.finder(x.ra, x.dec, x.code, { fov: 32 })}<span>Aufsuchkarte</span></div>` });
       const sc = WOW[x.id] * 18 + Math.min(p.alt, 60) * 0.5 - (moonBright && x.level >= 2 ? 18 : 0) - (x.level === 3 ? 6 : 0);
       (visible ? vis : off).push([visible ? sc : -90, html]);
     }

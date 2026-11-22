@@ -1,7 +1,7 @@
 /* HeadSpace · Service Worker
    - hält die App offline verfügbar
    - nimmt geteilte Dateien/Texte an (Android: „Teilen mit … HeadSpace“) */
-const CACHE = 'kosmos-v12';
+const CACHE = 'kosmos-v13';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png', './astro.js', './sky-data.js', './sky.js', './sky-charts.js', './sky-sagas.js'];
 
 self.addEventListener('install', e => {
@@ -48,8 +48,8 @@ self.addEventListener('fetch', e => {
     }).catch(() => caches.match(req, { ignoreSearch: true }).then(r => r || caches.match('./index.html'))));
     return;
   }
-  // Schriften: Cache zuerst
-  if (/fonts\.(googleapis|gstatic)\.com$/.test(url.hostname)) {
+  // Schriften & Fotos: Cache zuerst
+  if (/fonts\.(googleapis|gstatic)\.com$/.test(url.hostname) || /(^|\.)wikimedia\.org$/.test(url.hostname)) {
     e.respondWith(caches.match(req).then(hit => hit || fetch(req).then(r => { const cp = r.clone(); caches.open(CACHE).then(c => c.put(req, cp)); return r; })));
   }
 });

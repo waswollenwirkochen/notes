@@ -195,5 +195,60 @@
     return wrap(s, blur);
   }
 
-  window.SkyCharts = { conChart, finder, planetArt: k => (PLANET_ART[k] ? PLANET_ART[k]() : ''), dsoArt, FIG };
+
+  /* ---------- Fotos (Wikimedia Commons, frei lizenziert) ----------
+     Pro Objekt eine Liste [Dateiname, Bildnachweis]; die nächste wird versucht,
+     wenn eine Datei nicht lädt – am Ende springt die Zeichnung ein. */
+  const PH = {
+    m42: [['Orion Nebula - Hubble 2006 mosaic 18000.jpg', 'NASA, ESA, M. Robberto & Hubble Orion Treasury Team']],
+    m31: [['Andromeda Galaxy (with h-alpha).jpg', 'Adam Evans (CC BY 2.0)']],
+    m45: [['Pleiades large.jpg', 'NASA, ESA, AURA/Caltech']],
+    m57: [['M57 The Ring Nebula.JPG', 'NASA & Hubble Heritage Team']],
+    m27: [['M27 - Dumbbell Nebula.jpg', 'ESO']],
+    m13: [['Heart of M13 Hercules Globular Cluster.jpg', 'NASA & ESA'], ['Messier 013 2MASS.jpg', '2MASS (UMass/IPAC-Caltech/NASA/NSF)']],
+    m8: [['Lagoon Nebula (ESO).jpg', 'ESO'], ['Messier 008 2MASS.jpg', '2MASS']],
+    ngc7000: [['Nord america.jpg', null], ['Cygnus-Wall.jpg', 'Chuck Ayoub (CC BY-SA 4.0)']],
+    chi: [['Double Cluster.jpg', null]],
+    m97: [['The Owl Nebula M97 Goran Nilsson & The Liverpool Telescope.jpg', 'Göran Nilsson & Liverpool Telescope (CC BY-SA 4.0)']],
+    leotrio: [['Leo Triplet amateur image.jpg', null]],
+    albireo: [['Albireo double star.jpg', null]],
+    m81: [['Messier 81 HST.jpg', 'NASA, ESA & Hubble Heritage Team'], ['Messier 081 2MASS.jpg', '2MASS']],
+    m51: [['Messier51 sRGB.jpg', 'NASA, ESA, S. Beckwith & Hubble Heritage Team']],
+    m44: [['Beehive cluster (M44).jpg', 'Taavi Niittee / Tõrva Astronomyclub (CC0)']],
+    m101: [['M101 hires STScI-PRC2006-10a.jpg', 'NASA & ESA'], ['Messier 101 2MASS.jpg', '2MASS']],
+    m1: [['Crab Nebula.jpg', 'NASA, ESA, J. Hester & A. Loll'], ['Messier 001 2MASS.jpg', '2MASS']],
+    m33: [['VST snaps a very detailed view of the Triangulum Galaxy.jpg', 'ESO'], ['Messier 033 2MASS.jpg', '2MASS']],
+    m35: [['Messier 035 2MASS.jpg', '2MASS (Infrarot)']],
+    aur3: [['Messier 037 2MASS.jpg', '2MASS (Infrarot) – M37']],
+    m92: [['Messier 092 2MASS.jpg', '2MASS (Infrarot)']],
+    m3: [['Messier 003 2MASS.jpg', '2MASS (Infrarot)']],
+    m11: [['Messier 011 2MASS.jpg', '2MASS (Infrarot)']],
+    m22: [['Messier 022 2MASS.jpg', '2MASS (Infrarot)']],
+    mizar: [['Mizar and Alcor.jpg', null]],
+    Jupiter: [['Jupiter and its shrunken Great Red Spot.jpg', 'NASA, ESA, A. Simon (GSFC)']],
+    Saturn: [['Saturn during Equinox.jpg', 'NASA/JPL/Space Science Institute (Cassini)']],
+    Mars: [['OSIRIS Mars true color.jpg', 'ESA & MPS for OSIRIS Team (CC BY-SA 3.0 IGO)']],
+    Venus: [['Venus-real color.jpg', 'NASA (Mariner 10)']],
+    Mercury: [['Mercury in true color.jpg', 'NASA/JHUAPL/Carnegie (MESSENGER)']],
+    Uranus: [["Uranus as seen by NASA's Voyager 2 (remastered) - JPEG converted.jpg", 'NASA/JPL-Caltech (Voyager 2)']],
+    Neptune: [['Neptune - Voyager 2 (29347980845) flatten crop.jpg', 'NASA/JPL (Voyager 2)']],
+  };
+  const fname = f => f.replace(/ /g, '_');
+  const purl = f => 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(fname(f)) + '?width=640';
+  const ppage = f => 'https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(fname(f));
+  const escA = t => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  const pcap = ([f, c]) => `Foto: ${escA(c || 'Wikimedia Commons')} · <a href="${ppage(f)}" target="_blank" rel="noopener noreferrer">Quelle & Lizenz</a>`;
+  function photo(id, fallback, alt) {
+    const list = PH[id];
+    if (!list) return fallback;
+    return `<figure class="photo" data-i="0" data-list="${escA(JSON.stringify(list))}"><img src="${purl(list[0][0])}" alt="${escA(alt)}" loading="lazy" referrerpolicy="no-referrer" onerror="skyPhotoNext(this)"><figcaption>${pcap(list[0])}</figcaption><template>${fallback}</template></figure>`;
+  }
+  window.skyPhotoNext = img => {
+    const fig = img.closest('figure'); if (!fig) return;
+    const list = JSON.parse(fig.dataset.list), i = +fig.dataset.i + 1;
+    if (i < list.length) { fig.dataset.i = i; img.src = purl(list[i][0]); fig.querySelector('figcaption').innerHTML = pcap(list[i]); }
+    else { const d = document.createElement('div'); d.className = 'photo-fb'; d.innerHTML = fig.querySelector('template').innerHTML; fig.replaceWith(d); }
+  };
+
+  window.SkyCharts = { photo,  conChart, finder, planetArt: k => (PLANET_ART[k] ? PLANET_ART[k]() : ''), dsoArt, FIG };
 })();
