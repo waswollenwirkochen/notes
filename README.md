@@ -7,6 +7,8 @@ Persönliches Notizbuch für Laptop und Smartphone – als GitHub Page.
 - **Notizen**: freie Notizblöcke mit Suche, Anpinnen, Farben, Link-Chips, Kopieren/Teilen, **Checklisten** (auch direkt auf der Karte abhakbar) – plus **Spielstand**-Zähler.
 - **Frachtraum**: Bilder, Videos und Dateien zwischen Geräten hin- und herschieben (Upload, Drag & Drop, Strg+V), ansehen, teilen/sichern, löschen.
   **Auto-Löschen** nach 1 Tag, 3 Tagen, 1 Woche, 1 Monat oder 3 Monaten; einzelne Dateien lassen sich mit „Behalten“ ausnehmen.
+- **Stargazing**: aktuell sichtbare Planeten, Sternbilder (mit Mythen, z. B. Perseus-Sage, Wega & Altair) und Deep-Sky-Objekte – mit Aufsuchhilfe und Tipps für Auge, Fernglas, Teleskop und Smart-Teleskop. Mondphase, Dämmerung, mondfreie Dunkelheit, Wetter mit Sternguck-Bewertung (Open-Meteo), Standort per GPS oder Ortssuche, frei wählbare Uhrzeit.
+- **Himmelsereignisse**: Meteorströme (Maxima jährlich aus der Sonnenlänge berechnet), Finsternisse, Oppositionen, beste Merkur-/Venus-Sichtbarkeit, enge Begegnungen – große Ereignisse 2 Wochen vorab auf der Hauptseite, mit Pop-up, Beobachtungsbedingungen und „Was ist das?“. Die Mondphase steht als Designelement oben auf der Hauptseite.
 - **Tresor** (versteckt): PINs, Passwörter und geheime Notizen mit eigenem Tresor-Passwort. Doppelt verschlüsselt, Schlüssel nur im Arbeitsspeicher, sperrt sich automatisch (3 Min. Inaktivität, Reiterwechsel, App im Hintergrund). Kopierte Geheimnisse werden nach 30 s aus der Zwischenablage gelöscht; Passwort-Generator inklusive.
 - **Schnellnotiz**: runder Knopf unten rechts oder Taste **N** – als Notiz oder direkt als To-do (jede Zeile eine Aufgabe). Auf Android auch per langem Druck aufs App-Icon.
 
@@ -40,3 +42,7 @@ Ohne Token *und* Passphrase kommt niemand an die Inhalte – auch GitHub selbst 
 | `data.enc` | To-dos, Notizen, Medien-Index inkl. Vorschaubildern (verschlüsselt) |
 | `vault.enc` | Tresor – doppelt verschlüsselt (App-Schlüssel + eigenes Tresor-Passwort) |
 | `files/<id>` | die einzelnen Dateien (verschlüsselt) |
+
+## Astronomie
+
+Alle Positionen werden lokal im Browser berechnet (`astro.js`, Formeln nach Paul Schlyter, Genauigkeit ~1–2′) – ohne externe Bibliothek. Inhalte stehen in `sky-data.js`. Wetter & Ortssuche: [Open-Meteo](https://open-meteo.com/) (CC BY 4.0).

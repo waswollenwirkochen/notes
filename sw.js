@@ -1,8 +1,8 @@
 /* HeadSpace · Service Worker
    - hält die App offline verfügbar
    - nimmt geteilte Dateien/Texte an (Android: „Teilen mit … HeadSpace“) */
-const CACHE = 'kosmos-v5';
-const SHELL = ['./', './index.html', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
+const CACHE = 'kosmos-v6';
+const SHELL = ['./', './index.html', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png', './astro.js', './sky-data.js', './sky.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
