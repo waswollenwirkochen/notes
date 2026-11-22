@@ -439,10 +439,12 @@
   }
   const facts = f => f && f.length ? `<div class="sk-sec"><h4>${IC.star} Interessant</h4><ul class="facts">${f.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>` : '';
   const BODIES = new Map();
-  function item({ id, icon, color, name, sub, pos, mag, visible, note, body }) {
-    BODIES.set(id, { icon, color, name, sub, pos, mag, note, body });
+  const WOW = { Moon: 5, Saturn: 5, Jupiter: 5, Venus: 4, Mars: 4, Mercury: 2, Uranus: 2, Neptune: 1, ori: 5, uma: 5, tau: 5, cas: 4, cyg: 4, sco: 4, leo: 4, lyr: 4, gem: 4, cma: 4, sgr: 4, per: 3, peg: 3, and: 3, aql: 3, boo: 3, aur: 3, her: 3, umi: 3, crb: 3, vir: 2, dra: 2, cep: 2, cet: 2, cmi: 2, ari: 2, cnc: 1, m42: 5, m45: 5, m31: 5, chi: 4, m13: 4, albireo: 4, m44: 4, m57: 4, m8: 4, mizar: 3, m27: 3, m81: 3, m51: 3, m22: 3, m11: 3, ngc7000: 3, m35: 3, aur3: 3, m33: 2, m101: 2, m1: 2, m92: 2, m3: 2, leotrio: 2, m97: 1 };
+  const wowStars = id => { const w = WOW[id] || 2; return `<span class="wow" title="Wow-Faktor ${w} von 5">${'★'.repeat(w)}<i>${'★'.repeat(5 - w)}</i></span>`; };
+  function item({ id, icon, color, name, sub, pos, mag, visible, note, body, fig }) {
+    BODIES.set(id, { icon, color, name, sub, pos, mag, note, body, fig });
     return `<button class="sk-item ${visible ? '' : 'off'}" data-sk="obj" data-id="${id}">
-      <span class="sk-ic" ${color ? `style="color:${color}"` : ''}>${icon}</span><span class="sk-main"><b>${esc(name)}</b><span>${esc(sub)}</span></span>
+      <span class="sk-ic" ${color ? `style="color:${color}"` : ''}>${icon}</span><span class="sk-main"><b>${esc(name)} ${wowStars(id)}</b><span>${esc(sub)}</span></span>
       <span class="sk-pos">${pos ? `<b>${dir16(pos.az)} ${Math.round(pos.alt)}°</b>` : ''}${mag != null ? `<span>${magTxt(mag)}</span>` : ''}</span></button>`;
   }
   function openObj(id) {
@@ -450,6 +452,7 @@
     showModal(`<div class="modal sheet ev-modal obj-modal"><button class="ico close" data-act="close" aria-label="Schließen">✕</button>
       <div class="ev-head"><span class="ev-ico" ${o.color ? `style="color:${o.color}"` : ''}>${o.icon}</span><div><div class="ev-kind">${esc(o.sub)}</div><h2>${esc(o.name)}</h2></div></div>
       ${o.pos || o.mag != null ? `<div class="obj-pos">${o.pos ? `<span><b>${dir16(o.pos.az)}</b>Richtung</span><span><b>${Math.round(o.pos.alt)}°</b>Höhe</span>` : ''}${o.mag != null ? `<span><b>${magTxt(o.mag)}</b>Helligkeit</span>` : ''}</div>` : ''}
+      ${o.fig ? `<div class="obj-fig">${o.fig()}</div>` : ''}
       ${o.note ? `<p class="sk-note">${o.note}</p>` : ''}${o.body}</div>`, 'skyobj');
   }
   function listHTML(T, sunAlt, m, n) {
@@ -467,8 +470,10 @@
         const extra = key === 'Moon' ? `${pct(b.illum)} beleuchtet` : `im Sternbild ${con} · ${b.dist.toFixed(2).replace('.', ',')} AE entfernt`;
         const html = item({ id: key, icon: `<span class="pl-dot" style="background:${P.color}"></span>`, name: P.name, sub: `${P.type} · ${extra}`, pos: up ? b : null, mag: b.mag, visible,
           note: why + (times ? `<br><span class="muted">${times}</span>` : ''),
-          body: `<div class="sk-sec"><h4>${IC.pin} So findest du ihn</h4><p>${esc(P.find)}</p></div>${gear(P)}${facts(P.facts)}` });
-        (visible ? vis : off).push([visible ? b.alt : -90, html]);
+          body: `<div class="sk-sec"><h4>${IC.pin} So findest du ihn</h4><p>${esc(P.find)}</p></div>${gear(P)}${facts(P.facts)}`,
+          fig: () => `<div class="fig-art">${key === 'Moon' ? `<div class="moon-art">${moonSVG(170, b.illum, b.waxing)}</div>` : SkyCharts.planetArt(key)}<span>Illustration</span></div><div class="fig-map">${SkyCharts.finder(b.ra, b.dec, P.name, { type: 'planet', color: P.color, fov: 42 })}<span>Position zwischen den Sternen</span></div>` });
+        const sc = (WOW[key] + (key === 'Mars' && b.elong > 140 ? 1 : 0)) * 18 + Math.min(b.alt, 60) * 0.5;
+        (visible ? vis : off).push([visible ? sc : -90, html]);
       }
       return section(vis, off, 'Sonnensystem');
     }
@@ -481,10 +486,11 @@
         const story = c.story ? D.stories.find(s => s.id === c.story) : null;
         const html = item({ id: c.id, icon: IC.cons, color: '#b3a6ff', name: c.name, sub: `${c.latin} · ${c.stars}`, pos: p.alt > 0 ? p : null, visible, note: why,
           body: `<div class="sk-sec"><h4>${IC.pin} So findest du es</h4><p>${esc(c.find)}</p>${c.tip ? `<p class="sk-tip">${esc(c.tip)}</p>` : ''}</div>
-            <div class="sk-sec"><h4>${IC.book} Sage</h4><p>${esc(c.myth)}</p>
-            ${story ? `<div class="saga"><h5>${esc(story.title)}</h5>${story.text.map(t => `<p>${t}</p>`).join('')}</div>` : ''}</div>
-            ${(D.cultures || {})[c.id] ? `<div class="sk-sec"><h4>${IC.star} Andere Kulturen, andere Bilder</h4><ul class="cultures">${D.cultures[c.id].map(([k, t]) => `<li><b>${esc(k)}</b><span>${esc(t)}</span></li>`).join('')}</ul></div>` : ''}` });
-        (visible ? vis : off).push([visible ? p.alt : -90, html]);
+            <div class="sk-sec"><h4>${IC.book} Sage</h4>${((D.sagas || {})[c.id] || [c.myth]).map(t => `<p>${esc(t)}</p>`).join('')}
+            ${story ? `<div class="saga"><h5>${story.id === 'perseus' ? 'Wie die sechs Sternbilder zusammenhängen' : esc(story.title)}</h5>${story.text.map(t => `<p>${t}</p>`).join('')}</div>` : ''}</div>
+            ${(D.cultures || {})[c.id] ? `<div class="sk-sec"><h4>${IC.star} Andere Kulturen, andere Bilder</h4><ul class="cultures">${D.cultures[c.id].map(([k, t]) => `<li><b>${esc(k)}</b><span>${esc(t)}</span></li>`).join('')}</ul></div>` : ''}`,
+          fig: () => `<div class="fig-map wide">${SkyCharts.conChart(c.id, c)}<span>Sternkarte ${esc(c.name)} – Blick nach ${dir8(p.az)}, Norden oben</span></div>` });
+        (visible ? vis : off).push([visible ? WOW[c.id] * 18 + Math.min(p.alt, 60) * 0.5 : -90, html]);
       }
       return section(vis, off, 'Sternbilder');
     }
@@ -497,8 +503,10 @@
       if (visible && moonBright && x.level >= 2) why += ` <span class="warn">Mondlicht stört${mset ? ' – besser nach Monduntergang (' + fT(mset) + ')' : ''}.</span>`;
       const lv = ['', 'leicht', 'mittel', 'anspruchsvoll'][x.level];
       const html = item({ id: x.id, icon: dsoIcon(x.type), color: '#62e6d8', name: `${x.name}`, sub: `${x.code} · ${x.type} · ${x.con} · ${lv}`, pos: p.alt > 0 ? p : null, mag: x.mag, visible, note: why + `<br><span class="muted">Entfernung ${x.dist}</span>`,
-        body: `<div class="sk-sec"><h4>${IC.pin} So findest du es</h4><p>${esc(x.find)}</p></div>${gear(x)}${facts(x.facts)}` });
-      (visible ? vis : off).push([visible ? p.alt : -90, html]);
+        body: `<div class="sk-sec"><h4>${IC.pin} So findest du es</h4><p>${esc(x.find)}</p></div>${gear(x)}${facts(x.facts)}`,
+        fig: () => `<div class="fig-art">${SkyCharts.dsoArt(x)}<span>Illustration (Smart-Teleskop-Eindruck)</span></div><div class="fig-map">${SkyCharts.finder(x.ra, x.dec, x.code, { fov: 32 })}<span>Aufsuchkarte</span></div>` });
+      const sc = WOW[x.id] * 18 + Math.min(p.alt, 60) * 0.5 - (moonBright && x.level >= 2 ? 18 : 0) - (x.level === 3 ? 6 : 0);
+      (visible ? vis : off).push([visible ? sc : -90, html]);
     }
     return section(vis, off, 'Deep-Sky-Objekte');
   }

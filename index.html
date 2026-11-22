@@ -412,6 +412,24 @@ main{max-width:1120px;margin:0 auto;padding:8px 20px 60px}
 .sk-strip-h .hint{margin-left:auto;color:var(--dim);font-size:12px}
 .sk-ev-wrap{margin-top:18px}
 .obj-modal .sk-sec{margin-top:16px}
+.obj-fig{display:grid;grid-template-columns:200px 1fr;gap:10px;margin:12px 0 4px}
+.obj-fig>div{display:flex;flex-direction:column;gap:5px;min-width:0}
+.obj-fig>div>span{font-size:11px;color:var(--dim);text-align:center}
+.obj-fig .wide{grid-column:1/-1}
+.skychart,.skyart{width:100%;height:auto;display:block;border-radius:14px;border:1px solid var(--line)}
+.skyart{aspect-ratio:1}
+.moon-art{display:grid;place-items:center;aspect-ratio:1;border-radius:14px;border:1px solid var(--line);background:radial-gradient(circle at 50% 45%,#141638,#05060f)}
+.skychart .cl-f{stroke:#a594ff;stroke-width:1.6;opacity:.85}
+.skychart .cl-o{stroke:#8a8fd0;stroke-width:.8;opacity:.28}
+.skychart text{font-family:var(--body)}
+.skychart .sl-f{fill:#e6e4ff;font-size:10px;font-weight:600}
+.skychart .sl-o{fill:#8f93bb;font-size:9px}
+.skychart .sl-m{fill:#62e6d8;font-size:11px;font-weight:700}
+.skychart .sl-c{fill:#62658c;font-size:9px}
+.skychart .sl-con{fill:#a594ff;font-size:9px;letter-spacing:.12em;opacity:.55;font-weight:600}
+.wow{font-size:10px;color:var(--star);letter-spacing:1px;margin-left:4px;white-space:nowrap;font-weight:400}
+.wow i{font-style:normal;color:rgba(255,255,255,.15)}
+@media (max-width:760px){.obj-fig{grid-template-columns:minmax(0,1fr)}.obj-fig .fig-art{max-width:240px;margin:0 auto;width:100%}}
 .obj-pos{display:flex;gap:8px;margin:12px 0}
 .obj-pos span{flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 6px;border-radius:12px;background:rgba(5,6,20,.45);border:1px solid var(--line);font-size:12px;color:var(--muted)}
 .obj-pos b{font:600 16px var(--head);color:var(--teal)}
@@ -556,6 +574,8 @@ main{max-width:1120px;margin:0 auto;padding:8px 20px 60px}
 
 <script src="astro.js"></script>
 <script src="sky-data.js"></script>
+<script src="sky-sagas.js"></script>
+<script src="sky-charts.js"></script>
 <script src="sky.js"></script>
 <script>
 'use strict';
