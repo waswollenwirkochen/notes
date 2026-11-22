@@ -267,6 +267,7 @@ main{max-width:1120px;margin:0 auto;padding:8px 20px 60px}
   .todo-grid{grid-template-columns:1fr}
   .panel-h{flex-wrap:wrap;row-gap:2px}
   .panel-h .hint{flex-basis:100%;margin-left:0}
+  .rec-btn + .hint{margin-left:0!important}
   .todo .acts{opacity:1}
   .notes-grid{columns:2 150px;column-gap:10px}
   .note{margin-bottom:10px;padding:14px 13px 10px}
@@ -283,6 +284,19 @@ main{max-width:1120px;margin:0 auto;padding:8px 20px 60px}
 }
 
 /* Wiederholen / Chips */
+.rec-btn{display:inline-flex;align-items:center;gap:4px;margin-left:auto;align-self:center;padding:5px 9px;border-radius:10px;border:1px solid var(--line);color:var(--teal);transition:background .2s,border-color .2s}
+.rec-btn:hover{background:rgba(98,230,216,.08);border-color:rgba(98,230,216,.35)}
+.rec-btn svg{width:16px;height:16px}
+.rec-btn span{font-size:12px;font-weight:700}
+.rec-btn + .hint{margin-left:10px!important}
+.rec-add{margin:0 0 12px}
+.rec-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.rec-list li:not(.empty){display:flex;align-items:center;gap:6px;padding:8px 8px 8px 12px;border-radius:14px;background:rgba(5,6,20,.45);border:1px solid var(--line)}
+.rec-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.rec-txt{background:none;border:0;outline:0;font-size:16px;font-weight:600;padding:2px 4px;border-radius:6px;width:100%}
+.rec-txt:focus{background:rgba(255,255,255,.06)}
+.rec-meta{font-size:12px;color:var(--teal);padding:0 4px}
+.rec-meta b{color:var(--star);font-weight:600}
 .todo-col{display:flex;flex-direction:column;gap:18px}
 .todo .age.rep{color:var(--teal);opacity:.85}
 .todo .age b{color:var(--star);font-weight:600}
@@ -1034,10 +1048,11 @@ const todoLi = (x, up) => `<li class="todo ${x.done ? 'is-done' : ''} ${up ? 'up
   <span class="acts">${x.done ? '' : `<button class="mini" data-act="repeat" title="Wiederholen …" aria-label="Wiederholen">↻</button>`}${x.done || x.repeat ? '' : `<button class="mini" data-act="move" title="${x.list === 'today' ? 'Nach „Langfristig“ verschieben' : 'Auf heute holen'}">${x.list === 'today' ? 'später' : '↑ heute'}</button>`}<button class="mini x" data-act="del-todo" title="Löschen" aria-label="Löschen">×</button></span>
 </li>`;
 function todoPanel(k, t, ph, em, items) {
+  const nRec = alive(S.data.todos).filter(x => x.repeat).length;
   const open = items.filter(x => !x.done).sort((a, b) => a.order - b.order);
   const done = items.filter(x => x.done).sort((a, b) => (b.doneAt || 0) - (a.doneAt || 0));
   return `<section class="panel" data-list="${k}">
-    <header class="panel-h"><h2>${t}</h2><span class="count">${open.length || ''}</span>${k === 'today' ? '<span class="hint">Erledigtes verschwindet über Nacht</span>' : ''}</header>
+    <header class="panel-h"><h2>${t}</h2><span class="count">${open.length || ''}</span><button class="rec-btn" data-act="recur" data-def="${k === 'today' ? 'daily' : 'monthly'}" title="Wiederkehrende Aufgaben verwalten" aria-label="Wiederkehrende Aufgaben verwalten">${I.repeat}${nRec ? `<span>${nRec}</span>` : ''}</button>${k === 'today' ? '<span class="hint">Erledigtes verschwindet über Nacht</span>' : ''}</header>
     <form class="add-todo" data-list="${k}"><input name="t" placeholder="${ph}" autocomplete="off" enterkeyhint="send"><button aria-label="Hinzufügen">${I.plus}</button></form>
     <ul class="todos">${open.map(x => todoLi(x)).join('') || `<li class="empty">${em}</li>`}</ul>
     ${done.length ? `<details class="done-box" data-list="${k}" ${S.doneOpen[k] ? 'open' : ''}><summary>${done.length} erledigt</summary><ul class="todos">${done.map(x => todoLi(x)).join('')}</ul><button class="link" data-act="clear-done" data-list="${k}">Erledigte löschen</button></details>` : ''}
@@ -1045,21 +1060,30 @@ function todoPanel(k, t, ph, em, items) {
 }
 function renderTodos() {
   const d0 = startOfDay(), all = alive(S.data.todos), rec = all.filter(x => x.repeat);
-  const upcoming = rec.filter(x => x.due > d0).sort((a, b) => a.due - b.due);
   $('#main').innerHTML = `<div id="dailyFact"></div><div class="todo-grid">
     ${todoPanel('today', 'Heute', 'Was steht heute an?', 'Klarer Himmel – heute nichts offen.', all.filter(x => !x.repeat && x.list === 'today').concat(rec.filter(x => x.due <= d0)))}
-    <div class="todo-col">
-      ${todoPanel('later', 'Langfristig', 'Irgendwann, aber sicher …', 'Noch nichts für später geplant.', all.filter(x => !x.repeat && x.list === 'later'))}
-      <section class="panel"><header class="panel-h"><h2>Wiederkehrend</h2><span class="count">${upcoming.length || ''}</span><span class="hint">erscheint am Stichtag unter „Heute“</span></header>
-        <ul class="todos">${upcoming.map(x => todoLi(x, true)).join('') || `<li class="empty">Mit ↻ an einer Aufgabe wird sie zur Routine – täglich, werktags, wöchentlich oder monatlich.</li>`}</ul></section>
-    </div></div><div id="skStrip" class="sk-bottom"></div>`;
+    ${todoPanel('later', 'Langfristig', 'Irgendwann, aber sicher …', 'Noch nichts für später geplant.', all.filter(x => !x.repeat && x.list === 'later'))}
+    </div><div id="skStrip" class="sk-bottom"></div>`;
   document.querySelectorAll('.done-box').forEach(d => d.ontoggle = () => S.doneOpen[d.dataset.list] = d.open);
   try { Sky.strip($('#skStrip')); Sky.fact($('#dailyFact')); } catch (e) { console.warn(e); }
 }
+function openRecur(def) {
+  if (def) S.recDef = def;
+  const d0 = startOfDay(), rec = alive(S.data.todos).filter(x => x.repeat).sort((a, b) => a.due - b.due);
+  showModal(`<div class="modal sheet rec-sheet">
+    <button class="ico close" data-act="close" aria-label="Schließen">${I.x}</button>
+    <h2>Wiederkehrende Aufgaben</h2><p class="sub">Tauchen am Stichtag automatisch unter „Heute“ auf.</p>
+    <form class="add-todo rec-add" id="recAdd"><input name="t" placeholder="Neue Routine, z. B. Pflanzen gießen" autocomplete="off" enterkeyhint="send"><button aria-label="Hinzufügen">${I.plus}</button></form>
+    <ul class="rec-list">${rec.map(x => `<li data-id="${x.id}">
+        <div class="rec-main"><input class="rec-txt" value="${esc(x.text)}" aria-label="Name"><span class="rec-meta">${x.due <= d0 ? '<b>heute fällig</b>' : 'nächstes Mal ' + fmtDay(x.due)} · ${repLabel(x.repeat)}</span></div>
+        <button class="mini" data-act="rec-edit" title="Rhythmus ändern">↻ Rhythmus</button>
+        <button class="mini x" data-act="rec-del" title="Löschen" aria-label="Löschen">×</button></li>`).join('') || '<li class="empty">Noch keine Routinen. Oben einen Namen eintragen und danach den Rhythmus wählen.</li>'}</ul>
+  </div>`, 'recur');
+}
 const REP_OPTS = [['none', 'Nie'], ['daily', 'Täglich'], ['weekdays', 'Werktags'], ['weekly', 'Wöchentlich'], ['biweekly', 'Alle 2 Wochen'], ['monthly', 'Monatlich']];
-function openRepeat(id) {
+function openRepeat(id, back, defType) {
   const t = S.data.todos.find(x => x.id === id), r = t.repeat || {};
-  S.rep = { id, type: r.type || 'none', days: r.days ? [...r.days] : [new Date().getDay()], day: r.day || new Date().getDate() };
+  S.rep = { id, back, type: r.type || defType || 'none', days: r.days ? [...r.days] : [new Date().getDay()], day: r.day || new Date().getDate() };
   renderRepeat();
 }
 function draftRep() {
@@ -1722,6 +1746,7 @@ main.addEventListener('click', e => {
       upd('todos', id, { done: !t.done, doneAt: !t.done ? Date.now() : null }); render(); break;
     }
     case 'repeat': openRepeat(id); break;
+    case 'recur': openRecur(b.dataset.def); break;
     case 'move': { const t = S.data.todos.find(x => x.id === id); upd('todos', id, { list: t.list === 'today' ? 'later' : 'today', order: Date.now() }); render(); break; }
     case 'del-todo': { upd('todos', id, { deleted: true }); render(); toast('Aufgabe gelöscht', 'Rückgängig', () => { upd('todos', id, { deleted: false }); render(); }); break; }
     case 'clear-done': {
@@ -1801,7 +1826,13 @@ ov.addEventListener('click', e => {
       const rep = draftRep(), id = S.rep.id, t = S.data.todos.find(x => x.id === id);
       if (rep) upd('todos', id, { repeat: rep, due: firstDue(rep), done: false });
       else if (t.repeat) upd('todos', id, { repeat: null, due: null, list: 'today', order: Date.now() });
-      closeModal(); if (rep) toast('Wiederholt sich ' + repLabel(rep)); break;
+      if (S.rep.back) openRecur(); else closeModal();
+      if (rep) toast('Wiederholt sich ' + repLabel(rep)); break;
+    }
+    case 'rec-edit': openRepeat(b.closest('[data-id]').dataset.id, true); break;
+    case 'rec-del': {
+      const id = b.closest('[data-id]').dataset.id; upd('todos', id, { deleted: true }); openRecur();
+      toast('Routine gelöscht', 'Rückgängig', () => { upd('todos', id, { deleted: false }); if (S.modal === 'recur') openRecur(); else render(); }); break;
     }
     case 'q-target': localStorage.setItem('kn-qt', b.dataset.t); ov.querySelectorAll('[data-act=q-target]').forEach(c => c.classList.toggle('on', c === b)); $('#qHint').textContent = b.dataset.t === 'note' ? '' : 'Jede Zeile wird eine eigene Aufgabe.'; $('#qTxt').focus(); break;
     case 'q-save': saveQuick(); break;
@@ -1853,7 +1884,17 @@ ov.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); clAdd(n, i + 1); }
   else if (e.key === 'Backspace' && !el.value && n.items.length > 1) { e.preventDefault(); n.items.splice(i, 1); clRefresh(n, i - 1); }
 });
-ov.addEventListener('change', e => { if (e.target.classList.contains('pscore')) $('#scoreBox').innerHTML = scoreHTML(curNote()); });
+ov.addEventListener('change', e => {
+  if (e.target.classList.contains('pscore')) $('#scoreBox').innerHTML = scoreHTML(curNote());
+  if (e.target.classList.contains('rec-txt')) { const v = e.target.value.trim(), id = e.target.closest('[data-id]').dataset.id; if (v) upd('todos', id, { text: v }); }
+});
+ov.addEventListener('submit', e => {
+  if (e.target.id !== 'recAdd') return;
+  e.preventDefault(); const t = e.target.t.value.trim(); if (!t) return;
+  const now = Date.now(), id = uid();
+  S.data.todos.push({ id, text: t, list: 'today', done: false, order: now, createdAt: now, updatedAt: now });
+  touch(); openRepeat(id, true, S.recDef || 'daily');
+});
 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && S.modal) { e.preventDefault(); closeModal(); }
