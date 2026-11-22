@@ -435,3 +435,107 @@ eclipses: [
     detail: 'Der Mond liegt komplett im Kernschatten der Erde und färbt sich kupferrot – der „Blutmond“. Das rote Licht ist Sonnenlicht, das durch die Erdatmosphäre gebrochen wird: im Grunde alle Sonnenauf- und -untergänge der Erde gleichzeitig.' },
 ],
 };
+
+/* ---------------- Deutungen anderer Kulturen (je Sternbild) ---------------- */
+window.SkyData.cultures = {
+  uma: [
+    ['Mi’kmaq (Nordamerika)', 'Der Kasten ist ein Bär, die drei Deichselsterne sind Jäger, die ihn verfolgen – der schwache Alkor ist der Kochtopf, den der mittlere Jäger trägt. Im Herbst, wenn der Wagen tief steht, erlegen sie den Bären; sein Blut färbt die Blätter rot.'],
+    ['China', 'Běidǒu, der „Nördliche Scheffel“ – eine Schöpfkelle. Die Richtung, in die der Stiel am Abend zeigt, galt als Jahreszeitenuhr: nach Osten im Frühling, nach Süden im Sommer, nach Westen im Herbst, nach Norden im Winter.'],
+    ['Mitteleuropa & Skandinavien', 'Ein Wagen – im Mittelalter oft „Karlswagen“ nach Karl dem Großen (englisch bis heute „Charles’ Wain“), im Norden auch als Wagen Odins gedeutet.'],
+    ['Afroamerikanische Überlieferung', 'Die „Drinking Gourd“, eine Trinkkürbis-Schöpfe. Das Lied „Follow the Drinking Gourd“ wird mit der Flucht aus der Sklaverei in den Norden verbunden – der Wagen zeigt zum Polarstern und damit nach Norden.'],
+    ['Indien', 'Saptarishi – die sieben großen Weisen (Rishis) der vedischen Überlieferung.'],
+  ],
+  umi: [
+    ['China', 'Der Polarstern-Bereich war der Palast des Himmelskaisers, die „Purpurne Verbotene Einfriedung“ – um ihn dreht sich der gesamte Himmel wie der Hof um den Kaiser. Die Verbotene Stadt in Peking spiegelt diese Idee.'],
+    ['Mongolei & Sibirien', 'Der Polarstern ist der „Goldene Pflock“ (Altan Gadas), ein Pfahl am Himmel, an dem die Sterne wie Pferde angebunden sind und im Kreis laufen.'],
+  ],
+  cas: [
+    ['Arabische Welt', 'In einer alten arabischen Figur bildeten Kassiopeias Sterne die „hennagefärbte Hand“ (al-Kaff al-Khadīb), deren Finger in den Himmel greifen.'],
+    ['Sámi (Nordskandinavien)', 'Kassiopeia gehört zum Geweih des riesigen Himmelselchs Sarva, den die Jäger über den Nachthimmel verfolgen.'],
+  ],
+  and: [
+    ['Arabische Welt', 'Unter Andromedas Sternen sahen arabische Beobachter einen großen Fisch – Mirach hieß ursprünglich „Bauch des Fisches“. Der Astronom as-Sūfī beschrieb im Jahr 964 die Andromedagalaxie als „kleine Wolke“ – die älteste bekannte Erwähnung.'],
+  ],
+  per: [
+    ['Arabische Welt', 'Algol kommt von ra’s al-ghūl, „Kopf des Dämons“ – offenbar fiel das unheimliche Blinken schon früh auf.'],
+    ['China', 'Algol gehörte zum Sternbild „Großer Grabhügel“ – ebenfalls eine düstere Deutung für diesen Stern.'],
+  ],
+  peg: [
+    ['Babylon', 'Das große Viereck war IKU, „das Feld“ – ein Ackerstück am Himmel, eines der ältesten überlieferten Sternbilder.'],
+    ['China', 'Das Viereck bildete zwei der 28 Mondstationen: „Das Haus“ und „Die Wand“.'],
+  ],
+  lyr: [
+    ['China & Japan', 'Wega ist die Weberin Zhinü, in Japan Orihime – getrennt von ihrem Geliebten Altair durch die Milchstraße (siehe Sage). Gefeiert beim Qixi- bzw. Tanabata-Fest.'],
+    ['Arabische Welt', 'Der Name Wega stammt von an-nasr al-wāqi‘, dem „herabstoßenden Adler“ bzw. Geier.'],
+    ['Wales', 'In walisischer Überlieferung ist die Leier „Telyn Arthur“, die Harfe König Arthurs.'],
+  ],
+  aql: [
+    ['China & Japan', 'Altair ist der Kuhhirte Niulang (japanisch Hikoboshi), der seine zwei Kinder in Körben trägt – das sind die beiden Nachbarsterne.'],
+    ['Arabische Welt', 'Altair kommt von an-nasr aṭ-ṭā’ir, dem „fliegenden Adler“ – das Gegenstück zum „herabstoßenden“ Adler Wega.'],
+  ],
+  cyg: [
+    ['Christliches Europa', 'Das „Kreuz des Nordens“ – mitunter als Kreuz Christi gedeutet, im Gegenstück zum Kreuz des Südens.'],
+    ['Arabische Welt', 'Deneb heißt „Schwanz“ – ursprünglich dhanab ad-dajāja, der Schwanz der Henne.'],
+    ['China', 'In der Qixi-Sage spannen Elstern ihre Brücke über die Milchstraße – oft mit dem Schwan und Deneb gleichgesetzt.'],
+  ],
+  dra: [
+    ['China', 'Sterne des Drachen bildeten Teile der Mauern um den Palast des Himmelskaisers (Purpurne Verbotene Einfriedung).'],
+    ['Altes Ägypten', 'Thuban war zur Zeit des Pyramidenbaus der Polarstern – manche Forscher vermuten, dass Schächte der Großen Pyramide auf ihn ausgerichtet waren; das ist umstritten.'],
+  ],
+  boo: [
+    ['Hawaii & Polynesien', 'Arktur ist Hōkūle‘a, der „Stern der Freude“. Er zieht genau über Hawaii durch den Zenit und diente Navigatoren als Wegweiser zur Inselgruppe. Ein berühmtes traditionelles Reisekanu trägt seinen Namen.'],
+    ['Arabische Welt', 'Arktur hieß „der Lanzenträger“ (as-simāk ar-rāmiḥ).'],
+  ],
+  crb: [
+    ['Wales', 'Caer Arianrhod – das Schloss der Göttin Arianrhod.'],
+    ['Shawnee (Nordamerika)', 'Ein Kreis tanzender Himmelsschwestern. Ein Jäger verliebte sich in die jüngste, fing sie und lebte mit ihr auf der Erde – bis sie mit ihrem Sohn zurück in den Sternenkreis kehrte.'],
+    ['Arabische Welt', 'al-Fakka, „die zerbrochene (Schale)“ – der offene Kreis erinnerte an ein Gefäß mit Lücke. Daher der Sternname Alphecca.'],
+  ],
+  her: [
+    ['Frühgriechisch', 'Ursprünglich hieß die Figur nur Engonasin, „der Kniende“ – wer er war, wusste man schon in der Antike nicht. Erst später wurde er mit Herakles gleichgesetzt.'],
+  ],
+  leo: [
+    ['Mesopotamien', 'Schon vor über 3.000 Jahren ein Löwe (UR.GU.LA) – eines der ältesten durchgehend gleich gedeuteten Sternbilder.'],
+    ['Antike', 'Regulus heißt „kleiner König“ – schon die Griechen nannten ihn Basiliskos, den „Königsstern“.'],
+  ],
+  vir: [
+    ['Babylon', 'Die „Furche“ – Spika war die Ähre in der Hand der Göttin Shala, verbunden mit Ackerbau und Ernte.'],
+    ['Mittelalterliches Europa', 'Häufig als Jungfrau Maria gedeutet.'],
+  ],
+  gem: [
+    ['Babylon', 'Schon dort „die großen Zwillinge“ – zwei Götter, die über Pest und Unterwelt wachten.'],
+    ['Römische Seefahrt', 'Kastor und Pollux galten als Schutzpatrone der Seeleute; das Elmsfeuer an Masten wurde als ihr Zeichen gedeutet.'],
+  ],
+  tau: [
+    ['Mesopotamien', 'Der „Himmelsstier“ aus dem Gilgamesch-Epos: Die Göttin Ischtar schickte ihn gegen Gilgamesch, der ihn mit Enkidu tötete.'],
+    ['Aborigines (Australien)', 'Die Plejaden sind in vielen Überlieferungen sieben Schwestern, die von einem Mann verfolgt werden – er ist Orion. Erstaunlich ähnlich zur griechischen Sage.'],
+    ['Māori (Neuseeland)', 'Die Plejaden heißen Matariki. Ihr erstes Erscheinen in der Morgendämmerung markiert das Neujahr – heute ein Feiertag in Neuseeland.'],
+    ['Japan', 'Die Plejaden heißen Subaru, „die Vereinten“.'],
+  ],
+  ori: [
+    ['Altes Ägypten', 'Orion war Sah, eng mit dem Gott Osiris verbunden – Herrscher über Tod und Wiedergeburt.'],
+    ['Babylon', '„Der treue Hirte des Himmels“ (SIPA.ZI.AN.NA).'],
+    ['Yolŋu (Nordaustralien)', 'Ein Kanu (Djulpan): Die Gürtelsterne sind drei Brüder, der Orionnebel ein Fisch, den einer von ihnen unerlaubt gefangen hat. Zur Strafe trug sie ein Sturm in den Himmel.'],
+    ['Lakota (Nordamerika)', 'Die Gürtelsterne sind das Handgelenk einer großen Hand, die einem Häuptling abgetrennt wurde, weil er die Götter erzürnte.'],
+    ['Skandinavien', 'Der Gürtel war „Friggs Spinnrocken“, das Spinngerät der Göttin Frigg.'],
+  ],
+  cma: [
+    ['Altes Ägypten', 'Sirius war die Göttin Sopdet. Sein erster Aufgang in der Morgendämmerung im Sommer kündigte die Nilflut an und markierte den Jahresbeginn.'],
+    ['China', 'Sirius ist Tiānláng, der „Himmelswolf“.'],
+  ],
+  cnc: [
+    ['China', 'Die Praesepe hieß Jīshīqì, wörtlich etwa „Dunst der aufgehäuften Leichen“ – eine unheimliche Deutung des schimmernden Nebelflecks.'],
+  ],
+  sco: [
+    ['Māori (Neuseeland)', 'Der Skorpion ist Te Matau a Māui, der Angelhaken des Halbgotts Māui, mit dem er die Nordinsel Neuseelands aus dem Meer gezogen haben soll.'],
+    ['China', 'Antares ist das Herz des Azurblauen Drachen, einer der vier großen Himmelsfiguren.'],
+    ['Babylon', 'Schon hier ein Skorpion (GIR.TAB) – über 3.000 Jahre fast unverändert.'],
+  ],
+  sgr: [
+    ['Babylon', 'Pabilsag, ein geflügelter Kentaur mit Bogen – vermutlich das Vorbild für den griechischen Schützen.'],
+    ['China', 'Der „Südliche Scheffel“ – ein Gegenstück zum Großen Wagen im Norden.'],
+  ],
+  ari: [
+    ['Babylon', 'Ursprünglich „der Lohnarbeiter“ (LU.HUN.GA) – erst später wurde daraus ein Widder.'],
+  ],
+};

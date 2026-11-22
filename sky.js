@@ -376,9 +376,9 @@
         ${moonCard(T, m, n, base)}
         <section class="panel sk-card" id="skWx">${wxCard()}</section>
       </div>
-      ${eventsCard()}
       <div class="sk-seg">${[['solar', 'Sonnensystem'], ['cons', 'Sternbilder'], ['deep', 'Deep Sky']].map(([k, l]) => `<button class="${SK.sub === k ? 'on' : ''}" data-sk="sub" data-s="${k}">${l}</button>`).join('')}</div>
       <div id="skList">${listHTML(T, sun.alt, m, n)}</div>
+      <div class="sk-ev-wrap">${eventsCard()}</div>
       <p class="vhint">Faustregel: Eine ausgestreckte Faust deckt etwa 10° am Himmel ab, ein Finger etwa 2°. Positionen gelten für ${esc(L.name)}; Wetterdaten von <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>.</p>
     </div>`;
     const ci = q('#skCustom');
@@ -438,11 +438,19 @@
     return `<div class="gears">${row(IC.eye, 'Bloßes Auge', x.eye)}${row(IC.bino, 'Fernglas', x.bino)}${row(IC.scope, 'Teleskop', x.scope)}${row(IC.smart, 'Smart-Teleskop', x.smart)}</div>`;
   }
   const facts = f => f && f.length ? `<div class="sk-sec"><h4>${IC.star} Interessant</h4><ul class="facts">${f.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>` : '';
+  const BODIES = new Map();
   function item({ id, icon, color, name, sub, pos, mag, visible, note, body }) {
-    return `<details class="sk-item ${visible ? '' : 'off'}" data-skid="${id}">
-      <summary><span class="sk-ic" ${color ? `style="color:${color}"` : ''}>${icon}</span><span class="sk-main"><b>${esc(name)}</b><span>${esc(sub)}</span></span>
-        <span class="sk-pos">${pos ? `<b>${dir16(pos.az)} ${Math.round(pos.alt)}°</b>` : ''}${mag != null ? `<span>${magTxt(mag)}</span>` : ''}</span></summary>
-      <div class="sk-body">${note ? `<p class="sk-note">${note}</p>` : ''}${body}</div></details>`;
+    BODIES.set(id, { icon, color, name, sub, pos, mag, note, body });
+    return `<button class="sk-item ${visible ? '' : 'off'}" data-sk="obj" data-id="${id}">
+      <span class="sk-ic" ${color ? `style="color:${color}"` : ''}>${icon}</span><span class="sk-main"><b>${esc(name)}</b><span>${esc(sub)}</span></span>
+      <span class="sk-pos">${pos ? `<b>${dir16(pos.az)} ${Math.round(pos.alt)}°</b>` : ''}${mag != null ? `<span>${magTxt(mag)}</span>` : ''}</span></button>`;
+  }
+  function openObj(id) {
+    const o = BODIES.get(id); if (!o) return;
+    showModal(`<div class="modal sheet ev-modal obj-modal"><button class="ico close" data-act="close" aria-label="Schließen">✕</button>
+      <div class="ev-head"><span class="ev-ico" ${o.color ? `style="color:${o.color}"` : ''}>${o.icon}</span><div><div class="ev-kind">${esc(o.sub)}</div><h2>${esc(o.name)}</h2></div></div>
+      ${o.pos || o.mag != null ? `<div class="obj-pos">${o.pos ? `<span><b>${dir16(o.pos.az)}</b>Richtung</span><span><b>${Math.round(o.pos.alt)}°</b>Höhe</span>` : ''}${o.mag != null ? `<span><b>${magTxt(o.mag)}</b>Helligkeit</span>` : ''}</div>` : ''}
+      ${o.note ? `<p class="sk-note">${o.note}</p>` : ''}${o.body}</div>`, 'skyobj');
   }
   function listHTML(T, sunAlt, m, n) {
     const o = obs(), base = nightBase(T);
@@ -472,11 +480,13 @@
         const why = visible ? `<b>Jetzt:</b> ${where(p)}${circ ? ' · zirkumpolar – geht nie unter' : ''}.` : p.alt <= 12 ? (p.alt < 0 ? 'Zurzeit unter dem Horizont – zu einer anderen Jahres- oder Uhrzeit sichtbar.' : 'Steht gerade sehr tief am Horizont.') : 'Noch zu hell.';
         const story = c.story ? D.stories.find(s => s.id === c.story) : null;
         const html = item({ id: c.id, icon: IC.cons, color: '#b3a6ff', name: c.name, sub: `${c.latin} · ${c.stars}`, pos: p.alt > 0 ? p : null, visible, note: why,
-          body: `<div class="sk-sec"><h4>${IC.pin} So findest du es</h4><p>${esc(c.find)}</p>${c.tip ? `<p class="sk-tip">${esc(c.tip)}</p>` : ''}</div><div class="sk-sec"><h4>${IC.book} Mythos</h4><p>${esc(c.myth)}</p>${story ? `<p><button class="link-btn" data-sk="story" data-id="${story.id}">Ganze Geschichte: ${esc(story.title)} →</button></p>` : ''}</div>` });
+          body: `<div class="sk-sec"><h4>${IC.pin} So findest du es</h4><p>${esc(c.find)}</p>${c.tip ? `<p class="sk-tip">${esc(c.tip)}</p>` : ''}</div>
+            <div class="sk-sec"><h4>${IC.book} Sage</h4><p>${esc(c.myth)}</p>
+            ${story ? `<div class="saga"><h5>${esc(story.title)}</h5>${story.text.map(t => `<p>${t}</p>`).join('')}</div>` : ''}</div>
+            ${(D.cultures || {})[c.id] ? `<div class="sk-sec"><h4>${IC.star} Andere Kulturen, andere Bilder</h4><ul class="cultures">${D.cultures[c.id].map(([k, t]) => `<li><b>${esc(k)}</b><span>${esc(t)}</span></li>`).join('')}</ul></div>` : ''}` });
         (visible ? vis : off).push([visible ? p.alt : -90, html]);
       }
-      const stories = `<div class="sk-stories">${D.stories.map(s => `<button class="story-card" data-sk="story" data-id="${s.id}"><span>${IC.book}</span><b>${esc(s.title)}</b><small>${s.cons.map(id => D.constellations.find(c => c.id === id)?.name).filter(Boolean).join(' · ')}</small></button>`).join('')}</div>`;
-      return stories + section(vis, off, 'Sternbilder');
+      return section(vis, off, 'Sternbilder');
     }
     // Deep Sky
     const vis = [], off = [], moonBright = m.alt > 0 && m.illum > 0.45, mset = A.riseSet('Moon', o, T, 14).set;
@@ -540,6 +550,7 @@
     else if (a === 'gosky') switchTab('sky');
     else if (a === 'ev') openEvent(b.dataset.id);
     else if (a === 'story') openStory(b.dataset.id);
+    else if (a === 'obj') openObj(b.dataset.id);
     else if (a === 'wx') { SK.wxErr = null; loadWx(true).then(() => { const w = q('#skWx'); if (w) w.innerHTML = wxCard(); }); }
     else if (a === 'pick') setLoc({ lat: +b.dataset.lat, lon: +b.dataset.lon, name: b.dataset.name });
     else if (a === 'geo') {

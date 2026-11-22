@@ -1,7 +1,7 @@
 /* HeadSpace · Service Worker
    - hält die App offline verfügbar
    - nimmt geteilte Dateien/Texte an (Android: „Teilen mit … HeadSpace“) */
-const CACHE = 'kosmos-v7';
+const CACHE = 'kosmos-v9';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png', './astro.js', './sky-data.js', './sky.js'];
 
 self.addEventListener('install', e => {
