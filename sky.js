@@ -337,13 +337,9 @@
   function strip(el) {
     if (!el) return;
     let list = []; try { list = bigSoon(); } catch { }
-    const now = new Date(), m = A.geo('Moon', now), full = A.nextPhase(180, now), nw = A.nextPhase(0, now);
-    const nx = full && (!nw || full < nw) ? ['Vollmond', full] : ['Neumond', nw];
-    el.innerHTML = `<section class="panel sk-strip"><div class="sk-strip-in">
-      <button class="moon-hero" data-sk="gosky" title="Stargazing öffnen">${moonSVG(76, m.illum, m.waxing)}<span class="mh-txt"><b>${pct(m.illum)}</b><span>${phaseName(m.phase, m.illum)}</span>${nx[1] ? `<small>${nx[0]} ${inDays(nx[1].getTime())}</small>` : ''}</span></button>
-      <div class="sk-strip-ev"><div class="sk-strip-h"><h2>Am Himmel demnächst</h2><span class="hint">nächste 2 Wochen</span></div>
-      ${list.length ? `<div class="ev-list">${list.map(evRow).join('')}</div>` : '<p class="muted" style="margin:6px 0 0;font-size:14px">Keine großen Ereignisse in den nächsten zwei Wochen.</p>'}</div>
-    </div></section>`;
+    const m = A.geo('Moon', new Date());
+    el.innerHTML = `${list.length ? `<section class="panel sk-strip"><div class="sk-strip-h"><h2>Am Himmel demnächst</h2><span class="hint">nächste 2 Wochen</span></div><div class="ev-list">${list.map(evRow).join('')}</div></section>` : ''}
+      <button class="moon-deco" data-sk="gosky" aria-label="Stargazing öffnen" title="${phaseName(m.phase, m.illum)} · ${pct(m.illum)}">${moonSVG(132, m.illum, m.waxing)}</button>`;
   }
   function checkNew() {
     if (S.modal) return;

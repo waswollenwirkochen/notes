@@ -397,7 +397,11 @@ main{max-width:1120px;margin:0 auto;padding:8px 20px 60px}
 .ev-main b{font-weight:600}
 .ev-main span{font-size:13px;color:var(--muted)}
 .ev-chip{font-size:12px;color:var(--star);white-space:nowrap}
-.sk-strip{margin-bottom:0}
+.sk-strip{margin-bottom:0;padding:16px}
+.moon-deco{display:block;margin:34px auto 6px;border-radius:50%;position:relative;transition:transform .4s cubic-bezier(.2,.9,.3,1.2),filter .4s;filter:drop-shadow(0 0 26px rgba(255,240,200,.28)) drop-shadow(0 0 70px rgba(165,148,255,.18))}
+.moon-deco::after{content:"";position:absolute;inset:-18px;border-radius:50%;border:1px solid rgba(255,240,200,.08);box-shadow:0 0 0 18px rgba(255,240,200,.025)}
+.moon-deco:hover{transform:scale(1.05) rotate(-3deg);filter:drop-shadow(0 0 34px rgba(255,240,200,.42)) drop-shadow(0 0 90px rgba(165,148,255,.28))}
+.moon-deco:active{transform:scale(.97)}
 .sk-strip-in{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;padding:16px 16px 16px 14px}
 .moon-hero{display:flex;align-items:center;gap:16px;padding:8px 22px 8px 8px;border-radius:22px;text-align:left;transition:background .2s}
 .moon-hero:hover{background:rgba(255,255,255,.04)}
@@ -515,7 +519,8 @@ main{max-width:1120px;margin:0 auto;padding:8px 20px 60px}
   .kv2 b{min-width:0;overflow-wrap:anywhere}
   .sky-loc{max-width:100%}
   .sky-loc span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .sk-strip-in{grid-template-columns:1fr;gap:10px;padding:12px}
+  .sk-strip{padding:12px}
+  .moon-deco svg{width:112px!important;height:112px!important}
   .moon-hero{padding:4px}
   .sk-body{padding:0 14px 14px}
   .gears{grid-template-columns:1fr}
