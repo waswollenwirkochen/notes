@@ -193,7 +193,12 @@ main{max-width:1120px;margin:0 auto;padding:8px 20px 60px}
 .tile.picked .sel{background:var(--teal);border-color:var(--teal);color:#05060f}
 .tile.picked .sel svg{width:14px;height:14px}
 .selbar{position:sticky;top:76px;z-index:5;display:flex;align-items:center;gap:10px;padding:10px 12px 10px 18px;margin-bottom:14px;border-radius:999px;background:var(--panel2);border:1px solid var(--line2);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
-.selbar .grow{flex:1}
+.selbar .grow{flex:1;white-space:nowrap}
+.selbar{flex-wrap:wrap;border-radius:22px}
+.selbar .btn[disabled]{opacity:.4;pointer-events:none}
+.day-h{display:flex;align-items:center;gap:10px}
+.day-pick{font:600 12px var(--head);color:var(--teal);padding:2px 8px;border-radius:999px;border:1px solid rgba(98,230,216,.3);letter-spacing:0}
+.zipbar{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);margin:-6px 4px 12px}
 
 /* ---------- Overlay ---------- */
 #overlay{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(2,3,10,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
@@ -234,7 +239,10 @@ main{max-width:1120px;margin:0 auto;padding:8px 20px 60px}
 .v-top .meta{flex:1;min-width:0;font-size:14px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .v-top .meta b{color:var(--text);font-weight:600}
 .v-stage{flex:1;min-height:0;display:grid;place-items:center;position:relative}
-.v-stage img,.v-stage video{max-width:100%;max-height:100%;border-radius:12px;box-shadow:0 20px 70px rgba(0,0,0,.6);object-fit:contain}
+.v-stage>img,.v-stage>video{position:absolute;inset:0;margin:auto;max-width:100%;max-height:100%;width:auto;height:auto;border-radius:12px;box-shadow:0 20px 70px rgba(0,0,0,.6);object-fit:contain}
+.v-stage .v-nav{z-index:2}
+.v-name{flex:1;min-width:0;background:none;border:0;border-bottom:1px dashed transparent;outline:0;font:600 14px var(--body,inherit);color:var(--text);padding:2px 0}
+.v-name:hover,.v-name:focus{border-bottom-color:var(--line2)}
 .v-stage .spin{width:34px;height:34px;border-width:3px}
 .v-stage .file{text-align:center;color:var(--muted)}
 .v-stage .file b{display:block;font:700 34px var(--head);color:var(--text);margin-bottom:8px;text-transform:uppercase}
@@ -280,7 +288,9 @@ main{max-width:1120px;margin:0 auto;padding:8px 20px 60px}
   .viewer{padding:10px}
   .v-nav{display:none}
   .toolbar .btn{padding:10px 14px}
-  .selbar{top:64px}
+  .selbar{top:64px;padding:8px 10px 8px 14px;gap:6px}
+  .selbar .btn{padding:8px 11px}
+  .selbar .btn .bl{display:none}
 }
 
 /* Wiederholen / Chips */
@@ -1247,7 +1257,8 @@ function renderMedia() {
   let lastDay = null, grid = '';
   for (const m of items) {
     const d = startOfDay(m.createdAt);
-    if (d !== lastDay) { grid += (lastDay === null ? '' : '</div>') + `<h3 class="day-h">${dayLabel(m.createdAt)}</h3><div class="media-grid">`; lastDay = d; }
+    if (d !== lastDay) { const dayIds = items.filter(x => startOfDay(x.createdAt) === d).map(x => x.id), allDay = dayIds.every(x => S.picked.has(x));
+      grid += (lastDay === null ? '' : '</div>') + `<h3 class="day-h">${dayLabel(m.createdAt)}${S.selecting ? `<button class="day-pick" data-act="pick-day" data-day="${d}">${allDay ? 'Tag abwählen' : 'Tag auswählen'}</button>` : ''}</h3><div class="media-grid">`; lastDay = d; }
     const ext = (m.name.split('.').pop() || 'Datei').slice(0, 5);
     const ex = expiry(m), left = ex - Date.now();
     grid += `<button class="tile ${S.picked.has(m.id) ? 'picked' : ''}" data-act="open-media" data-id="${m.id}" title="${esc(m.name)}">
@@ -1258,10 +1269,14 @@ function renderMedia() {
   }
   if (items.length) grid += '</div>';
   $('#main').innerHTML = `
-    ${S.selecting ? `<div class="selbar"><span class="grow">${S.picked.size} ausgewählt</span>
-       <button class="btn" data-act="pick-all">${S.picked.size === items.length && items.length ? 'Keine' : 'Alle'}</button>
-       <button class="btn danger" data-act="del-picked" ${S.picked.size ? '' : 'disabled style="opacity:.4"'}>${I.trash} Löschen</button>
-       <button class="btn" data-act="sel-off">Fertig</button></div>`
+    ${S.selecting ? (() => { const n = S.picked.size, dis = n ? '' : 'disabled', pk = items.filter(x => S.picked.has(x.id)), allKeep = pk.length && pk.every(x => x.keep), sz = pk.reduce((a, x) => a + (x.size || 0), 0);
+       return `<div class="selbar"><span class="grow">${n} ausgewählt${n ? ' · ' + fmtSize(sz) : ''}</span>
+       <button class="btn" data-act="pick-all">${I.select}<span class="bl"> ${n === items.length && items.length ? 'Keine' : 'Alle auswählen'}</span></button>
+       ${navigator.canShare ? `<button class="btn" data-act="share-picked" ${dis} title="Teilen / in Galerie sichern">${I.share}<span class="bl"> Teilen</span></button>` : ''}
+       <button class="btn" data-act="dl-picked" ${dis} title="${n > 1 ? 'Als ZIP herunterladen' : 'Herunterladen'}">${I.down}<span class="bl"> ${n > 1 ? 'ZIP' : 'Laden'}</span></button>
+       <button class="btn ${allKeep ? 'on' : ''}" data-act="keep-picked" ${dis} title="Vom automatischen Löschen ausnehmen">${I.star}<span class="bl"> ${allKeep ? 'Behalten ✓' : 'Behalten'}</span></button>
+       <button class="btn danger" data-act="del-picked" ${dis} title="Löschen">${I.trash}<span class="bl"> Löschen</span></button>
+       <button class="btn" data-act="sel-off">Fertig</button></div>${S.zip ? `<div class="zipbar"><span class="spin"></span>${esc(S.zip)}</div>` : ''}`; })()
     : `<div class="toolbar">
        <button class="btn primary" data-act="pick">${I.up} Hochladen</button>
        ${items.length ? `<button class="btn" data-act="sel-on">${I.select} Auswählen</button>` : ''}
@@ -1350,7 +1365,7 @@ async function openMedia(id) {
   S.viewId = id;
   const canShare = !!navigator.canShare;
   showModal(`<div class="viewer">
-    <div class="v-top"><div class="meta"><b>${esc(m.name)}</b> · ${fmtSize(m.size)} · ${fmtDate(m.createdAt)}${expiry(m) ? ' · wird ' + fmtDay(startOfDay(expiry(m))) + ' gelöscht' : ''}</div><button class="ico" data-act="close" title="Schließen (Esc)">${I.x}</button></div>
+    <div class="v-top"><input class="v-name" id="vName" value="${esc(m.name)}" title="Umbenennen" spellcheck="false" size="${Math.min(40, Math.max(8, m.name.length))}"><div class="meta">${fmtSize(m.size)} · ${fmtDate(m.createdAt)}${expiry(m) ? ' · wird ' + fmtDay(startOfDay(expiry(m))) + ' gelöscht' : ''}</div><button class="ico" data-act="close" title="Schließen (Esc)">${I.x}</button></div>
     <div class="v-stage" id="vStage"><span class="spin"></span>
       ${i > 0 ? `<button class="v-nav l" data-act="v-prev" aria-label="Vorheriges">${I.left}</button>` : ''}
       ${i < list.length - 1 ? `<button class="v-nav r" data-act="v-next" aria-label="Nächstes">${I.right}</button>` : ''}</div>
@@ -1394,6 +1409,51 @@ async function shareMedia(m) {
     if (navigator.canShare && navigator.canShare({ files: [file] })) await navigator.share({ files: [file] });
     else downloadMedia(m);
   } catch (e) { if (e.name !== 'AbortError') toast('Teilen nicht möglich: ' + e.message); }
+}
+const CRC_T = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function crc32(u) { let c = 0xFFFFFFFF; for (let i = 0; i < u.length; i++) c = CRC_T[(c ^ u[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+function makeZip(files) { // [{name, data:Uint8Array, date}] – unkomprimiert (Fotos/Videos sind schon komprimiert)
+  const enc = new TextEncoder(), parts = [], cent = []; let off = 0; const used = new Set();
+  for (const f of files) {
+    let nm = f.name.replace(/[\\/:*?"<>|]/g, '_'); if (used.has(nm)) { const i = nm.lastIndexOf('.'), b = i > 0 ? nm.slice(0, i) : nm, x = i > 0 ? nm.slice(i) : ''; let k = 2; while (used.has(`${b} (${k})${x}`)) k++; nm = `${b} (${k})${x}`; } used.add(nm);
+    const n = enc.encode(nm), d = new Date(f.date || Date.now()), crc = crc32(f.data), sz = f.data.length;
+    const dt = ((d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1)) & 0xFFFF, dd = (((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate()) & 0xFFFF;
+    const h = new DataView(new ArrayBuffer(30)); h.setUint32(0, 0x04034b50, true); h.setUint16(4, 20, true); h.setUint16(6, 0x0800, true); h.setUint16(10, dt, true); h.setUint16(12, dd, true); h.setUint32(14, crc, true); h.setUint32(18, sz, true); h.setUint32(22, sz, true); h.setUint16(26, n.length, true);
+    parts.push(h.buffer, n, f.data);
+    const c = new DataView(new ArrayBuffer(46)); c.setUint32(0, 0x02014b50, true); c.setUint16(4, 20, true); c.setUint16(6, 20, true); c.setUint16(8, 0x0800, true); c.setUint16(12, dt, true); c.setUint16(14, dd, true); c.setUint32(16, crc, true); c.setUint32(20, sz, true); c.setUint32(24, sz, true); c.setUint16(28, n.length, true); c.setUint32(42, off, true);
+    cent.push(c.buffer, n); off += 30 + n.length + sz;
+  }
+  const cs = cent.reduce((a, x) => a + x.byteLength, 0), e = new DataView(new ArrayBuffer(22));
+  e.setUint32(0, 0x06054b50, true); e.setUint16(8, files.length, true); e.setUint16(10, files.length, true); e.setUint32(12, cs, true); e.setUint32(16, off, true);
+  return new Blob([...parts, ...cent, e.buffer], { type: 'application/zip' });
+}
+async function loadPicked() {
+  const pk = mediaList().filter(x => S.picked.has(x.id)), out = [];
+  for (let i = 0; i < pk.length; i++) { S.zip = `Lade ${i + 1} von ${pk.length} …`; renderMedia(); const { blob } = await loadBlob(pk[i]); out.push({ m: pk[i], blob }); }
+  return out;
+}
+async function dlPicked() {
+  if (S.zip) return;
+  try {
+    const pk = mediaList().filter(x => S.picked.has(x.id));
+    if (pk.length === 1) return downloadMedia(pk[0]);
+    const got = await loadPicked(); S.zip = 'Packe ZIP …'; renderMedia();
+    const files = await Promise.all(got.map(async g => ({ name: g.m.name, date: g.m.createdAt, data: new Uint8Array(await g.blob.arrayBuffer()) })));
+    const url = URL.createObjectURL(makeZip(files)), a = Object.assign(document.createElement('a'), { href: url, download: `HeadSpace-Frachtraum-${new Date().toISOString().slice(0, 10)}.zip` });
+    document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 60000);
+    toast(`${files.length} Dateien als ZIP heruntergeladen`);
+  } catch (e) { toast('Download fehlgeschlagen: ' + e.message); }
+  finally { S.zip = null; S.tab === 'media' && renderMedia(); }
+}
+async function sharePicked() {
+  if (S.zip) return;
+  try {
+    const got = await loadPicked(), files = got.map(g => new File([g.blob], g.m.name, { type: g.m.mime }));
+    S.zip = null; renderMedia();
+    if (navigator.canShare && navigator.canShare({ files })) await navigator.share({ files });
+    else { toast('Teilen mehrerer Dateien nicht möglich – lade als ZIP'); return dlPicked(); }
+  } catch (e) { if (e.name !== 'AbortError') toast('Teilen nicht möglich: ' + e.message); }
+  finally { S.zip = null; S.tab === 'media' && renderMedia(); }
 }
 async function downloadMedia(m) {
   try { const { url } = await loadBlob(m); const a = Object.assign(document.createElement('a'), { href: url, download: m.name }); document.body.append(a); a.click(); a.remove(); }
@@ -1764,6 +1824,10 @@ main.addEventListener('click', e => {
     case 'sel-off': S.selecting = false; S.picked.clear(); renderMedia(); break;
     case 'pick-all': { const all = mediaList(); if (S.picked.size === all.length) S.picked.clear(); else all.forEach(m => S.picked.add(m.id)); renderMedia(); break; }
     case 'del-picked': { if (!S.picked.size) return; deleteMedia([...S.picked]); S.picked.clear(); S.selecting = false; renderMedia(); break; }
+    case 'pick-day': { const d = +b.dataset.day, ids = mediaList().filter(x => startOfDay(x.createdAt) === d).map(x => x.id), all = ids.every(x => S.picked.has(x)); ids.forEach(x => all ? S.picked.delete(x) : S.picked.add(x)); renderMedia(); break; }
+    case 'keep-picked': { const pk = mediaList().filter(x => S.picked.has(x.id)), v = !pk.every(x => x.keep); pk.forEach(x => upd('media', x.id, { keep: v })); toast(v ? `${pk.length} behalten – werden nicht automatisch gelöscht` : 'Behalten aufgehoben'); renderMedia(); break; }
+    case 'dl-picked': dlPicked(); break;
+    case 'share-picked': sharePicked(); break;
     case 'vt-new': openVEntry(null); break;
     case 'vt-lock': vaultLock(); break;
     case 'vt-edit': openVEntry(id); break;
@@ -1772,7 +1836,12 @@ main.addEventListener('click', e => {
     case 'vt-cuser': { const e = V.data.entries.find(x => x.id === id); copySecret(e.user, 'Benutzername', true); break; }
     case 'vt-retry': V.loaded = false; V.err = null; renderVault(); break;
     case 'open-media':
-      if (S.selecting) { S.picked.has(id) ? S.picked.delete(id) : S.picked.add(id); renderMedia(); }
+      if (!S.selecting && (e.ctrlKey || e.metaKey || e.shiftKey)) { S.selecting = true; S.picked.clear(); }
+      if (S.selecting) {
+        if (e.shiftKey && S.lastPick) { const l = mediaList().map(x => x.id), a = l.indexOf(S.lastPick), z = l.indexOf(id); if (a > -1 && z > -1) l.slice(Math.min(a, z), Math.max(a, z) + 1).forEach(x => S.picked.add(x)); }
+        else S.picked.has(id) ? S.picked.delete(id) : S.picked.add(id);
+        S.lastPick = id; renderMedia();
+      }
       else openMedia(id);
       break;
   }
@@ -1886,6 +1955,7 @@ ov.addEventListener('keydown', e => {
 });
 ov.addEventListener('change', e => {
   if (e.target.classList.contains('pscore')) $('#scoreBox').innerHTML = scoreHTML(curNote());
+  if (e.target.id === 'vName') { const m = S.data.media.find(x => x.id === S.viewId), v = e.target.value.trim(); if (m && v && v !== m.name) { upd('media', m.id, { name: v }); toast('Umbenannt'); } else if (m) e.target.value = m.name; }
   if (e.target.classList.contains('rec-txt')) { const v = e.target.value.trim(), id = e.target.closest('[data-id]').dataset.id; if (v) upd('todos', id, { text: v }); }
 });
 ov.addEventListener('submit', e => {
@@ -1901,8 +1971,11 @@ document.addEventListener('keydown', e => {
   if (S.modal === 'quick' && e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); saveQuick(); }
   const t = e.target, typing = t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable;
   if (!S.modal && !typing && !$('#app').hidden && (e.key === 'n' || e.key === 'N') && !e.ctrlKey && !e.metaKey && !e.altKey) { e.preventDefault(); openQuick(); }
-  if (S.modal === 'viewer' && e.key === 'ArrowLeft') stepMedia(-1);
-  if (S.modal === 'viewer' && e.key === 'ArrowRight') stepMedia(1);
+  if (S.modal === 'viewer' && t.id === 'vName' && e.key === 'Enter') { e.preventDefault(); t.blur(); }
+  if (S.modal === 'viewer' && !typing && e.key === 'ArrowLeft') stepMedia(-1);
+  if (S.modal === 'viewer' && !typing && e.key === 'ArrowRight') stepMedia(1);
+  if (S.tab === 'media' && S.selecting && !S.modal && !typing && (e.ctrlKey || e.metaKey) && e.key === 'a') { e.preventDefault(); mediaList().forEach(m => S.picked.add(m.id)); renderMedia(); }
+  if (S.tab === 'media' && S.selecting && !S.modal && e.key === 'Escape') { S.selecting = false; S.picked.clear(); renderMedia(); }
 });
 document.addEventListener('paste', e => {
   if ($('#app').hidden) return;
